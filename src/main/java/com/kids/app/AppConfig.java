@@ -1,5 +1,6 @@
 package com.kids.app;
 
+import com.kids.app.servent.ServentInfo;
 import com.kids.app.snapshot_bitcake.SnapshotType;
 
 import java.io.FileInputStream;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class contains all the global application configuration stuff.
@@ -46,9 +46,6 @@ public class AppConfig {
 	 * </ul>
 	 */
 	public static SnapshotType SNAPSHOT_TYPE;
-	
-	public static AtomicBoolean isWhite = new AtomicBoolean(true);
-	public static final Object colorLock = new Object();
 	
 	/**
 	 * Print a message to stdout with a timestamp

@@ -1,5 +1,6 @@
-package com.kids.app;
+package com.kids.app.servent;
 
+import com.kids.app.AppConfig;
 import com.kids.app.snapshot_bitcake.NullSnapshotCollector;
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
 import com.kids.app.snapshot_bitcake.SnapshotCollectorWorker;
@@ -46,7 +47,7 @@ public class ServentMain {
 		AppConfig.myServentInfo = AppConfig.getInfoById(serventId);
 		
 		try {
-			portNumber = AppConfig.myServentInfo.getListenerPort();
+			portNumber = AppConfig.myServentInfo.listenerPort();
 			
 			if (portNumber < 1000 || portNumber > 2000) {
 				throw new NumberFormatException();

@@ -15,7 +15,7 @@ public class InfoCommand implements CLICommand {
 		AppConfig.timestampedStandardPrint("Neighbors:");
 		StringBuilder neighbors = new StringBuilder();
 
-		for (Integer neighbor : AppConfig.myServentInfo.getNeighbors()) {
+		for (Integer neighbor : AppConfig.myServentInfo.neighbors()) {
 			neighbors.append(neighbor).append(" ");
 		}
 		

@@ -1,6 +1,6 @@
 package com.kids.servent.message;
 
-import com.kids.app.ServentInfo;
+import com.kids.app.servent.ServentInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,7 +37,13 @@ public interface Message extends Serializable {
 	 * on this object, this attribute will not be changed.
 	 */
 	ServentInfo getOriginalSenderInfo();
-	
+
+	/**
+	 * If a servent uses <code>makeMeASender</code> when resending a message, it will
+	 * be added to this list. So we can use this to see how this message got to us.
+	 */
+	ServentInfo getOriginalReceiverInfo();
+
 	/**
 	 * If a servent uses <code>makeMeASender</code> when resending a message, it will
 	 * be added to this list. So we can use this to see how this message got to us.
@@ -48,12 +54,6 @@ public interface Message extends Serializable {
 	 * Information about the receiver of the message.
 	 */
 	ServentInfo getReceiverInfo();
-	
-	/**
-	 * Message color - white means that the message was sent before a local snapshot
-	 * was created, and red (non-white) means it is after.
-	 */
-	boolean isWhite();
 	
 	/**
 	 * Message type. Mainly used to decide which handler will work on this message.
@@ -82,18 +82,6 @@ public interface Message extends Serializable {
 	 * the receiver being changed to the one with the specified <code>id</code>.
 	 */
 	Message changeReceiver(Integer newReceiverId);
-	
-	/**
-	 * Alters the message and returns a new copy with everything intact, except
-	 * the color being changed to red.
-	 */
-	Message setRedColor();
-	
-	/**
-	 * Alters the message and returns a new copy with everything intact, except
-	 * the color being changed to white.
-	 */
-	Message setWhiteColor();
 	
 	/**
 	 * This method is invoked by the frameworks sender code. It is invoked

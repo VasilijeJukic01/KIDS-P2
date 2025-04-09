@@ -1,7 +1,8 @@
-package com.kids.servent.message;
+package com.kids.servent.message.implementation;
 
-import com.kids.app.ServentInfo;
+import com.kids.app.servent.ServentInfo;
 import com.kids.app.snapshot_bitcake.BitcakeManager;
+import com.kids.servent.message.MessageType;
 
 import java.io.Serial;
 
@@ -17,9 +18,9 @@ public class TransactionMessage extends BasicMessage {
 	private static final long serialVersionUID = -333251402058492901L;
 
 	private final transient BitcakeManager bitcakeManager;
-	
-	public TransactionMessage(ServentInfo sender, ServentInfo receiver, int amount, BitcakeManager bitcakeManager) {
-		super(MessageType.TRANSACTION, sender, receiver, String.valueOf(amount));
+
+	public TransactionMessage(ServentInfo sender, ServentInfo receiver, ServentInfo neighbor, int amount, BitcakeManager bitcakeManager) {
+		super(MessageType.TRANSACTION, sender, receiver, neighbor, String.valueOf(amount));
 		this.bitcakeManager = bitcakeManager;
 	}
 	
@@ -31,7 +32,6 @@ public class TransactionMessage extends BasicMessage {
 	@Override
 	public void sendEffect() {
 		int amount = Integer.parseInt(getMessageText());
-		
 		bitcakeManager.takeSomeBitcakes(amount);
 	}
 }

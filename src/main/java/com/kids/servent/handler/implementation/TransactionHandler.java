@@ -1,26 +1,24 @@
-package com.kids.servent.handler;
+package com.kids.servent.handler.implementation;
 
 import com.kids.app.AppConfig;
 import com.kids.app.snapshot_bitcake.BitcakeManager;
+import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class TransactionHandler implements MessageHandler {
 
 	private final Message clientMessage;
 	private final BitcakeManager bitcakeManager;
-	
-	public TransactionHandler(Message clientMessage, BitcakeManager bitcakeManager) {
-		this.clientMessage = clientMessage;
-		this.bitcakeManager = bitcakeManager;
-	}
 
 	@Override
 	public void run() {
 		if (clientMessage.getMessageType() == MessageType.TRANSACTION) {
 			String amountString = clientMessage.getMessageText();
 			
-			int amountNumber = 0;
+			int amountNumber;
 			try {
 				amountNumber = Integer.parseInt(amountString);
 			} catch (NumberFormatException e) {

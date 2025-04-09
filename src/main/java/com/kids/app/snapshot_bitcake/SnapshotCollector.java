@@ -10,7 +10,5 @@ import com.kids.app.Cancellable;
  */
 public interface SnapshotCollector extends Runnable, Cancellable {
 	BitcakeManager getBitcakeManager();
-	void addNaiveSnapshotInfo(String snapshotSubject, int amount);
 	void startCollecting();
-
 }

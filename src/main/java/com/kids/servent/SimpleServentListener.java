@@ -4,8 +4,8 @@ import com.kids.app.AppConfig;
 import com.kids.app.Cancellable;
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
-import com.kids.servent.handler.NullHandler;
-import com.kids.servent.handler.TransactionHandler;
+import com.kids.servent.handler.implementation.NullHandler;
+import com.kids.servent.handler.implementation.TransactionHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.util.MessageUtil;
 
@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +22,6 @@ public class SimpleServentListener implements Runnable, Cancellable {
 	 * Thread pool for executing the handlers. Each client will get its own handler thread.
 	 */
 	private final ExecutorService threadPool = Executors.newWorkStealingPool();
-	private List<Message> redMessages = new ArrayList<>();
 	private volatile boolean working = true;
 	private final SnapshotCollector snapshotCollector;
 
@@ -36,11 +33,11 @@ public class SimpleServentListener implements Runnable, Cancellable {
 	public void run() {
 		ServerSocket listenerSocket = null;
 		try {
-			listenerSocket = new ServerSocket(AppConfig.myServentInfo.getListenerPort(), 100);
+			listenerSocket = new ServerSocket(AppConfig.myServentInfo.listenerPort(), 100);
 			// If there is no connection after 1s, wake up and see if we should terminate
 			listenerSocket.setSoTimeout(1000);
 		} catch (IOException e) {
-			AppConfig.timestampedErrorPrint("Couldn't open listener socket on: " + AppConfig.myServentInfo.getListenerPort());
+			AppConfig.timestampedErrorPrint("Couldn't open listener socket on: " + AppConfig.myServentInfo.listenerPort());
 			System.exit(0);
 		}
 		
@@ -49,9 +46,7 @@ public class SimpleServentListener implements Runnable, Cancellable {
 				Message clientMessage;
 				// This blocks for up to 1s, after which SocketTimeoutException is thrown
 				Socket clientSocket = listenerSocket.accept();
-
 				clientMessage = MessageUtil.readMessage(clientSocket);
-
 				MessageHandler messageHandler = new NullHandler(clientMessage);
 				
 				/*

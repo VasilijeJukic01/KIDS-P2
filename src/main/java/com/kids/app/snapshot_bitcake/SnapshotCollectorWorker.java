@@ -19,7 +19,8 @@ public class SnapshotCollectorWorker implements SnapshotCollector {
 	private volatile boolean working = true;
 	private final AtomicBoolean collecting = new AtomicBoolean(false);
 	private final Map<String, Integer> collectedNaiveValues = new ConcurrentHashMap<>();
-	private SnapshotType snapshotType = SnapshotType.NAIVE;
+
+	private final SnapshotType snapshotType;
 	private BitcakeManager bitcakeManager;
 
 	public SnapshotCollectorWorker(SnapshotType snapshotType) {
@@ -103,11 +104,6 @@ public class SnapshotCollectorWorker implements SnapshotCollector {
 			collecting.set(false);
 		}
 
-	}
-	
-	@Override
-	public void addNaiveSnapshotInfo(String snapshotSubject, int amount) {
-		collectedNaiveValues.put(snapshotSubject, amount);
 	}
 	
 	@Override

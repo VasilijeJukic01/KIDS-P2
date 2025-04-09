@@ -20,9 +20,6 @@ public class NullSnapshotCollector implements SnapshotCollector {
 	}
 
 	@Override
-	public void addNaiveSnapshotInfo(String snapshotSubject, int amount) {}
-
-	@Override
 	public void startCollecting() {}
 
 }

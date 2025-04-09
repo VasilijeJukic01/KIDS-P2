@@ -1,7 +1,9 @@
-package com.kids.servent.message;
+package com.kids.servent.message.implementation;
 
 import com.kids.app.AppConfig;
-import com.kids.app.ServentInfo;
+import com.kids.app.servent.ServentInfo;
+import com.kids.servent.message.Message;
+import com.kids.servent.message.MessageType;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -20,37 +22,48 @@ public class BasicMessage implements Message {
 
 	@Serial
 	private static final long serialVersionUID = -9075856313609777945L;
+
 	private final MessageType type;
 	private final ServentInfo originalSenderInfo;
+	private final ServentInfo originalReceiverInfo;
 	private final ServentInfo receiverInfo;
 	private final List<ServentInfo> routeList;
 	private final String messageText;
-	private final boolean white;
 	
 	// This gives us a unique id - incremented in every natural constructor.
 	private static final AtomicInteger messageCounter = new AtomicInteger(0);
 	private final int messageId;
 	
-	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo receiverInfo) {
+	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo) {
 		this.type = type;
 		this.originalSenderInfo = originalSenderInfo;
+		this.originalReceiverInfo = originalReceiverInfo;
 		this.receiverInfo = receiverInfo;
-		this.white = AppConfig.isWhite.get();
 		this.routeList = new ArrayList<>();
 		this.messageText = "";
 		
 		this.messageId = messageCounter.getAndIncrement();
 	}
 	
-	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo receiverInfo, String messageText) {
+	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, String messageText) {
 		this.type = type;
 		this.originalSenderInfo = originalSenderInfo;
+		this.originalReceiverInfo = originalReceiverInfo;
 		this.receiverInfo = receiverInfo;
-		this.white = AppConfig.isWhite.get();
 		this.routeList = new ArrayList<>();
 		this.messageText = messageText;
 		
 		this.messageId = messageCounter.getAndIncrement();
+	}
+
+	protected BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, List<ServentInfo> routeList, String messageText, int messageId) {
+		this.type = type;
+		this.originalSenderInfo = originalSenderInfo;
+		this.originalReceiverInfo = originalReceiverInfo;
+		this.receiverInfo = receiverInfo;
+		this.routeList = routeList;
+		this.messageText = messageText;
+		this.messageId = messageId;
 	}
 	
 	@Override
@@ -64,13 +77,13 @@ public class BasicMessage implements Message {
 	}
 
 	@Override
+	public ServentInfo getOriginalReceiverInfo() {
+		return originalReceiverInfo;
+	}
+
+	@Override
 	public ServentInfo getReceiverInfo() {
 		return receiverInfo;
-	}
-	
-	@Override
-	public boolean isWhite() {
-		return white;
 	}
 	
 	@Override
@@ -88,17 +101,6 @@ public class BasicMessage implements Message {
 		return messageId;
 	}
 	
-	protected BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo receiverInfo,
-						   boolean white, List<ServentInfo> routeList, String messageText, int messageId) {
-		this.type = type;
-		this.originalSenderInfo = originalSenderInfo;
-		this.receiverInfo = receiverInfo;
-		this.white = white;
-		this.routeList = routeList;
-		this.messageText = messageText;
-		this.messageId = messageId;
-	}
-	
 	/**
 	 * Used when resending a message. It will not change the original owner
 	 * (so equality is not affected), but will add us to the route list, so
@@ -112,7 +114,7 @@ public class BasicMessage implements Message {
 		newRouteList.add(newRouteItem);
 
         return new BasicMessage(getMessageType(), getOriginalSenderInfo(),
-                getReceiverInfo(), isWhite(), newRouteList, getMessageText(), getMessageId());
+                getOriginalReceiverInfo(), getReceiverInfo(), newRouteList, getMessageText(), getMessageId());
 	}
 	
 	/**
@@ -121,27 +123,15 @@ public class BasicMessage implements Message {
 	 */
 	@Override
 	public Message changeReceiver(Integer newReceiverId) {
-		if (AppConfig.myServentInfo.getNeighbors().contains(newReceiverId)) {
+		if (AppConfig.myServentInfo.neighbors().contains(newReceiverId)) {
 			ServentInfo newReceiverInfo = AppConfig.getInfoById(newReceiverId);
 
-            return new BasicMessage(getMessageType(), getOriginalSenderInfo(),
-                    newReceiverInfo, isWhite(), getRoute(), getMessageText(), getMessageId());
+            return new BasicMessage(getMessageType(), getOriginalSenderInfo(), getOriginalReceiverInfo(),
+                    newReceiverInfo, getRoute(), getMessageText(), getMessageId());
 		} else {
 			AppConfig.timestampedErrorPrint("Trying to make a message for " + newReceiverId + " who is not a neighbor.");
 			return null;
 		}
-	}
-	
-	@Override
-	public Message setRedColor() {
-        return new BasicMessage(getMessageType(), getOriginalSenderInfo(),
-                getReceiverInfo(), false, getRoute(), getMessageText(), getMessageId());
-	}
-	
-	@Override
-	public Message setWhiteColor() {
-        return new BasicMessage(getMessageType(), getOriginalSenderInfo(),
-                getReceiverInfo(), true, getRoute(), getMessageText(), getMessageId());
 	}
 	
 	/**
@@ -151,7 +141,7 @@ public class BasicMessage implements Message {
 	public boolean equals(Object obj) {
 		if (obj instanceof BasicMessage other) {
             return getMessageId() == other.getMessageId() &&
-                    getOriginalSenderInfo().getId() == other.getOriginalSenderInfo().getId();
+                    getOriginalSenderInfo().id() == other.getOriginalSenderInfo().id();
 		}
 		return false;
 	}
@@ -162,7 +152,7 @@ public class BasicMessage implements Message {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(getMessageId(), getOriginalSenderInfo().getId());
+		return Objects.hash(getMessageId(), getOriginalSenderInfo().id());
 	}
 	
 	/**
@@ -170,9 +160,9 @@ public class BasicMessage implements Message {
 	 */
 	@Override
 	public String toString() {
-		return "[" + getOriginalSenderInfo().getId() + "|" + getMessageId() + "|" +
+		return "[" + getOriginalSenderInfo().id() + "|" + getMessageId() + "|" +
 					getMessageText() + "|" + getMessageType() + "|" +
-					getReceiverInfo().getId() + "]";
+					getReceiverInfo().id() + "]";
 	}
 
 	/**

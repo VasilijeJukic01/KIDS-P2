@@ -28,11 +28,11 @@ public class MultipleServentStarter {
 	 * We will wait for user stop in a separate thread.
 	 * The main thread is waiting for processes to end naturally.
 	 */
-	private static class serventCLI implements Runnable {
+	private static class ServentCLI implements Runnable {
 		
 		private final List<Process> serventProcesses;
 		
-		public serventCLI(List<Process> serventProcesses) {
+		public ServentCLI(List<Process> serventProcesses) {
 			this.serventProcesses = serventProcesses;
 		}
 		
@@ -65,9 +65,9 @@ public class MultipleServentStarter {
 		int serventCount = AppConfig.getServentCount();
 		for(int i = 0; i < serventCount; i++) {
 			try {
-				ProcessBuilder builder = new ProcessBuilder("java", "-cp", "out\\production\\KiDS-P2", "com.kids.app.serventMain",
-						testName+"/servent_list.properties", String.valueOf(i));
-				
+				ProcessBuilder builder = new ProcessBuilder("java", "-cp", "build/classes/java/main", "com.kids.app.servent.ServentMain",
+						testName + "/servent_list.properties", String.valueOf(i));
+
 				// We use files to read and write
 				// System.out, System.err and System.in will point to these files
 				builder.redirectOutput(new File(testName+"/output/servent" + i + "_out.txt"));
@@ -84,7 +84,7 @@ public class MultipleServentStarter {
 		}
 
 		// CLI thread waiting for user to type "stop"
-		Thread t = new Thread(new serventCLI(serventProcesses));
+		Thread t = new Thread(new ServentCLI(serventProcesses));
 		t.start();
 		
 		for (Process process : serventProcesses) {

@@ -35,7 +35,7 @@ public class MessageUtil {
 	public static Map<Integer, BlockingQueue<Message>> pendingMarkers = new ConcurrentHashMap<>();
 	
 	public static void initializePendingMessages() {
-		for (Integer neighbor : AppConfig.myServentInfo.getNeighbors()) {
+		for (Integer neighbor : AppConfig.myServentInfo.neighbors()) {
 			pendingMarkers.put(neighbor, new LinkedBlockingQueue<>());
 			pendingMessages.put(neighbor, new LinkedBlockingQueue<>());
 		}
