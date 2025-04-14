@@ -119,14 +119,8 @@ public class AppConfig {
 			snapshotType = "none";
 		}
 		switch (snapshotType) {
-		case "naive":
-			SNAPSHOT_TYPE = SnapshotType.NAIVE;
-			break;
-		case "cl":
-			SNAPSHOT_TYPE = SnapshotType.CHANDY_LAMPORT;
-			break;
-		case "ly":
-			SNAPSHOT_TYPE = SnapshotType.LAI_YANG;
+		case "ab":
+			SNAPSHOT_TYPE = SnapshotType.ACHARYA_BADRINATH;
 			break;
 		default:
 			timestampedErrorPrint("Problem reading snapshot algorithm. Defaulting to NONE.");
@@ -171,6 +165,7 @@ public class AppConfig {
 			ServentInfo newInfo = new ServentInfo("localhost", i, serventPort, neighborList);
 			SERVENT_INFO_LIST.add(newInfo);
 		}
+		CausalBroadcast.initializeVectorClock(serventCount);
 	}
 	
 	/**

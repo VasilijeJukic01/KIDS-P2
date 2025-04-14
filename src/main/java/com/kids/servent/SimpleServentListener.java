@@ -4,8 +4,7 @@ import com.kids.app.AppConfig;
 import com.kids.app.Cancellable;
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
-import com.kids.servent.handler.implementation.NullHandler;
-import com.kids.servent.handler.implementation.TransactionHandler;
+import com.kids.servent.handler.implementation.CausalBroadcastHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.util.MessageUtil;
 
@@ -13,17 +12,27 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Listens for incoming messages on a specified port and processes them using a thread pool.
+ * It handles messages in a concurrent environment and integrates with a snapshot collector for distributed system snapshots.
+ */
 public class SimpleServentListener implements Runnable, Cancellable {
 
 	/*
 	 * Thread pool for executing the handlers. Each client will get its own handler thread.
 	 */
 	private final ExecutorService threadPool = Executors.newWorkStealingPool();
+
 	private volatile boolean working = true;
 	private final SnapshotCollector snapshotCollector;
+	private final Set<Message> receivedBroadcasts = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Object lock = new Object();
 
 	public SimpleServentListener(SnapshotCollector snapshotCollector) {
 		this.snapshotCollector = snapshotCollector;
@@ -47,20 +56,14 @@ public class SimpleServentListener implements Runnable, Cancellable {
 				// This blocks for up to 1s, after which SocketTimeoutException is thrown
 				Socket clientSocket = listenerSocket.accept();
 				clientMessage = MessageUtil.readMessage(clientSocket);
-				MessageHandler messageHandler = new NullHandler(clientMessage);
-				
-				/*
-				 * Each message type has its own handler.
-				 * If we can get away with stateless handlers, we will,
-				 * because that way is much simpler and less error prone.
-				 */
-				switch (clientMessage.getMessageType()) {
-				case TRANSACTION:
-					messageHandler = new TransactionHandler(clientMessage, snapshotCollector.getBitcakeManager());
-					break;
-				case POISON:
-					break;
-				}
+
+				MessageHandler messageHandler = new CausalBroadcastHandler(
+						clientMessage,
+						receivedBroadcasts,
+						snapshotCollector,
+						lock
+				);
+
 				threadPool.submit(messageHandler);
 			} catch (SocketTimeoutException timeoutEx) {
 				// Uncomment the next line to see that we are waking up every second

@@ -3,6 +3,7 @@ package com.kids.servent.message.util;
 import com.kids.app.AppConfig;
 import com.kids.app.servent.ServentInfo;
 import com.kids.servent.message.Message;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -15,13 +16,10 @@ import java.net.Socket;
  * @author bmilojkovic
  *
  */
+@AllArgsConstructor
 public class DelayedMessageSender implements Runnable {
 
 	private Message messageToSend;
-	
-	public DelayedMessageSender(Message messageToSend) {
-		this.messageToSend = messageToSend;
-	}
 	
 	public void run() {
 		/*

@@ -28,8 +28,7 @@ public class TransactionHandler implements MessageHandler {
 			
 			bitcakeManager.addSomeBitcakes(amountNumber);
 
-
-			AppConfig.timestampedErrorPrint("Transaction handler got: " + clientMessage);
+			AppConfig.timestampedStandardPrint("Transaction handler got: " + clientMessage);
 		}
 	}
 

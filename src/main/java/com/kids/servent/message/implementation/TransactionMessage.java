@@ -5,6 +5,7 @@ import com.kids.app.snapshot_bitcake.BitcakeManager;
 import com.kids.servent.message.MessageType;
 
 import java.io.Serial;
+import java.util.Map;
 
 /**
  * Represents a bitcake transaction. We are sending some bitcakes to another node.
@@ -19,8 +20,8 @@ public class TransactionMessage extends BasicMessage {
 
 	private final transient BitcakeManager bitcakeManager;
 
-	public TransactionMessage(ServentInfo sender, ServentInfo receiver, ServentInfo neighbor, int amount, BitcakeManager bitcakeManager) {
-		super(MessageType.TRANSACTION, sender, receiver, neighbor, String.valueOf(amount));
+	public TransactionMessage(ServentInfo sender, ServentInfo receiver, ServentInfo neighbor, int amount, BitcakeManager bitcakeManager, Map<Integer, Integer> senderVectorClock) {
+		super(MessageType.TRANSACTION, sender, receiver, neighbor, String.valueOf(amount), senderVectorClock);
 		this.bitcakeManager = bitcakeManager;
 	}
 	

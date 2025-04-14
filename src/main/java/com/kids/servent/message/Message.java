@@ -4,6 +4,7 @@ import com.kids.app.servent.ServentInfo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is your basic message. It should cover most needs.
@@ -90,5 +91,10 @@ public interface Message extends Serializable {
 	 * we are sending the message.
 	 */
 	void sendEffect();
+
+	/**
+	 * Returns the vector clock of the sender of this message.
+	 */
+	Map<Integer, Integer> getSenderVectorClock();
 	
 }

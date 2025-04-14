@@ -1,6 +1,7 @@
 package com.kids.app.servent;
 
 import com.kids.app.AppConfig;
+import com.kids.app.CausalBroadcast;
 import com.kids.app.snapshot_bitcake.NullSnapshotCollector;
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
 import com.kids.app.snapshot_bitcake.SnapshotCollectorWorker;
@@ -68,6 +69,9 @@ public class ServentMain {
 		} else {
 			snapshotCollector = new SnapshotCollectorWorker(AppConfig.SNAPSHOT_TYPE);
 		}
+
+		CausalBroadcast.injectSnapshotCollector(snapshotCollector);
+
 		Thread snapshotCollectorThread = new Thread(snapshotCollector);
 		snapshotCollectorThread.start();
 		

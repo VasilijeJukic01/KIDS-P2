@@ -8,7 +8,9 @@ import com.kids.servent.message.MessageType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,38 +31,42 @@ public class BasicMessage implements Message {
 	private final ServentInfo receiverInfo;
 	private final List<ServentInfo> routeList;
 	private final String messageText;
+	private final Map<Integer, Integer> senderVectorClock;
 	
 	// This gives us a unique id - incremented in every natural constructor.
 	private static final AtomicInteger messageCounter = new AtomicInteger(0);
 	private final int messageId;
-	
-	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo) {
+
+	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, Map<Integer, Integer> senderVectorClock) {
 		this.type = type;
 		this.originalSenderInfo = originalSenderInfo;
 		this.originalReceiverInfo = originalReceiverInfo;
 		this.receiverInfo = receiverInfo;
+		this.senderVectorClock =  new ConcurrentHashMap<>(senderVectorClock);
 		this.routeList = new ArrayList<>();
 		this.messageText = "";
-		
-		this.messageId = messageCounter.getAndIncrement();
-	}
-	
-	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, String messageText) {
-		this.type = type;
-		this.originalSenderInfo = originalSenderInfo;
-		this.originalReceiverInfo = originalReceiverInfo;
-		this.receiverInfo = receiverInfo;
-		this.routeList = new ArrayList<>();
-		this.messageText = messageText;
-		
+
 		this.messageId = messageCounter.getAndIncrement();
 	}
 
-	protected BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, List<ServentInfo> routeList, String messageText, int messageId) {
+	public BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, String messageText, Map<Integer, Integer> senderVectorClock) {
 		this.type = type;
 		this.originalSenderInfo = originalSenderInfo;
 		this.originalReceiverInfo = originalReceiverInfo;
 		this.receiverInfo = receiverInfo;
+		this.senderVectorClock =  new ConcurrentHashMap<>(senderVectorClock);
+		this.routeList = new ArrayList<>();
+		this.messageText = messageText;
+
+		this.messageId = messageCounter.getAndIncrement();
+	}
+
+	protected BasicMessage(MessageType type, ServentInfo originalSenderInfo, ServentInfo originalReceiverInfo, ServentInfo receiverInfo, Map<Integer, Integer> senderVectorClock, List<ServentInfo> routeList, String messageText, int messageId) {
+		this.type = type;
+		this.originalSenderInfo = originalSenderInfo;
+		this.originalReceiverInfo = originalReceiverInfo;
+		this.receiverInfo = receiverInfo;
+		this.senderVectorClock =  senderVectorClock;
 		this.routeList = routeList;
 		this.messageText = messageText;
 		this.messageId = messageId;
@@ -114,7 +120,9 @@ public class BasicMessage implements Message {
 		newRouteList.add(newRouteItem);
 
         return new BasicMessage(getMessageType(), getOriginalSenderInfo(),
-                getOriginalReceiverInfo(), getReceiverInfo(), newRouteList, getMessageText(), getMessageId());
+                getOriginalReceiverInfo(), getReceiverInfo(), getSenderVectorClock(),
+				newRouteList, getMessageText(), getMessageId()
+		);
 	}
 	
 	/**
@@ -127,7 +135,7 @@ public class BasicMessage implements Message {
 			ServentInfo newReceiverInfo = AppConfig.getInfoById(newReceiverId);
 
             return new BasicMessage(getMessageType(), getOriginalSenderInfo(), getOriginalReceiverInfo(),
-                    newReceiverInfo, getRoute(), getMessageText(), getMessageId());
+                    newReceiverInfo, getSenderVectorClock(), getRoute(), getMessageText(), getMessageId());
 		} else {
 			AppConfig.timestampedErrorPrint("Trying to make a message for " + newReceiverId + " who is not a neighbor.");
 			return null;
@@ -160,9 +168,9 @@ public class BasicMessage implements Message {
 	 */
 	@Override
 	public String toString() {
-		return "[" + getOriginalSenderInfo().id() + "|" + getMessageId() + "|" +
-					getMessageText() + "|" + getMessageType() + "|" +
-					getReceiverInfo().id() + "]";
+		return "[Original Sender: " + getOriginalSenderInfo().id() + "|Message ID: " + getMessageId() + "|Content: " + getMessageText() +
+				"|Type: " + getMessageType() + "|Receiver: " + (getReceiverInfo() != null ? getReceiverInfo().id() : null) + "|Original Receiver: " +
+				(getOriginalReceiverInfo() != null ? getOriginalReceiverInfo().id() : null) + "]";
 	}
 
 	/**
@@ -172,4 +180,10 @@ public class BasicMessage implements Message {
 	public void sendEffect() {
 		
 	}
+
+	@Override
+	public Map<Integer, Integer> getSenderVectorClock() {
+		return senderVectorClock;
+	}
+
 }

@@ -1,15 +1,22 @@
 package com.kids.cli.command;
 
 import com.kids.app.AppConfig;
+import com.kids.app.CausalBroadcast;
 import com.kids.app.servent.ServentInfo;
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.implementation.TransactionMessage;
 import com.kids.servent.message.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Executes a burst of random transactions by creating multiple worker threads.
+ * Each worker picks a different receiving node and sends a transaction message with a randomly selected amount.
+ */
 @RequiredArgsConstructor
 public class TransactionBurstCommand implements CLICommand {
 
@@ -18,33 +25,46 @@ public class TransactionBurstCommand implements CLICommand {
 	private static final int MAX_TRANSFER_AMOUNT = 5;
 
 	private final SnapshotCollector snapshotCollector;
+	private final Object lock = new Object();
 
 	private class TransactionBurstWorker implements Runnable {
-		
+
 		@Override
 		public void run() {
-			ThreadLocalRandom rand = ThreadLocalRandom.current();
 			for (int i = 0; i < TRANSACTION_COUNT; i++) {
-				for (int neighbor : AppConfig.myServentInfo.neighbors()) {
-					ServentInfo neighborInfo = AppConfig.getInfoById(neighbor);
-					
-					int amount = 1 + rand.nextInt(MAX_TRANSFER_AMOUNT);
-					
-					/*
-					 * The message itself will reduce our bitcake count as it is being sent.
-					 * The sending might be delayed, so we want to make sure we do the
-					 * reducing at the right time, not earlier.
-					 */
-					Message transactionMessage = new TransactionMessage(
-							AppConfig.myServentInfo,
-							neighborInfo,
-							neighborInfo,
-							amount,
-							snapshotCollector.getBitcakeManager()
-					);
-					MessageUtil.sendMessage(transactionMessage);
+				ServentInfo receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
+
+				// Choose a random receiver that is not us
+				while (receiverInfo.id() == AppConfig.myServentInfo.id()) {
+					receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
 				}
-				
+
+				int amount = 1 + (int) (Math.random() * MAX_TRANSFER_AMOUNT);
+
+				Message transaction;
+				synchronized (lock) {
+					Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+
+					transaction = new TransactionMessage(
+							AppConfig.myServentInfo,
+							receiverInfo,
+							null,
+							amount,
+							snapshotCollector.getBitcakeManager(),
+							vectorClock
+					);
+
+					if (snapshotCollector.getBitcakeManager() instanceof ABBitcakeManager) {
+						CausalBroadcast.addSentMessage(transaction);
+					}
+
+					// Deduct the amount and send the message
+					transaction.sendEffect();
+					CausalBroadcast.causalClockIncrement(transaction);
+				}
+
+				AppConfig.myServentInfo.neighbors()
+						.forEach(neighbor -> MessageUtil.sendMessage(transaction.changeReceiver(neighbor).makeMeASender()));
 			}
 		}
 	}
