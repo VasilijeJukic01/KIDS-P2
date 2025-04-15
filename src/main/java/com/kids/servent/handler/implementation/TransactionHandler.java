@@ -1,7 +1,9 @@
 package com.kids.servent.handler.implementation;
 
 import com.kids.app.AppConfig;
+import com.kids.app.CausalBroadcast;
 import com.kids.app.snapshot_bitcake.BitcakeManager;
+import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
@@ -27,6 +29,10 @@ public class TransactionHandler implements MessageHandler {
 			}
 			
 			bitcakeManager.addSomeBitcakes(amountNumber);
+
+			if (bitcakeManager instanceof ABBitcakeManager) {
+				CausalBroadcast.addReceivedMessage(clientMessage);
+			}
 
 			AppConfig.timestampedStandardPrint("Transaction handler got: " + clientMessage);
 		}

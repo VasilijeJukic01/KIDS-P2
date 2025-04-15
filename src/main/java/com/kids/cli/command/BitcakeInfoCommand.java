@@ -1,14 +1,12 @@
 package com.kids.cli.command;
 
 import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class BitcakeInfoCommand implements CLICommand {
 
 	private final SnapshotCollector collector;
-	
-	public BitcakeInfoCommand(SnapshotCollector collector) {
-		this.collector = collector;
-	}
 	
 	@Override
 	public String commandName() {
