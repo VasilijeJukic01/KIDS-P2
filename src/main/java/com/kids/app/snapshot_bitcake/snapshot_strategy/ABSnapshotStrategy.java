@@ -5,7 +5,7 @@ import com.kids.app.CausalBroadcast;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
 import com.kids.servent.message.Message;
-import com.kids.servent.message.implementation.ABSnapshotRequestMessage;
+import com.kids.servent.message.implementation.ab.ABSnapshotRequestMessage;
 import com.kids.servent.message.util.MessageUtil;
 import lombok.AllArgsConstructor;
 
@@ -45,7 +45,7 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
 
     @Override
     public boolean isSnapshotComplete() {
-        // // We have collected all the responses
+        // We have collected all the responses
         return collectedData.size() == AppConfig.getServentCount();
     }
 

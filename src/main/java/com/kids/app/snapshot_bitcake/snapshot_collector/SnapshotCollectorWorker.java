@@ -1,13 +1,19 @@
-package com.kids.app.snapshot_bitcake;
+package com.kids.app.snapshot_bitcake.snapshot_collector;
 
 import com.kids.app.AppConfig;
+import com.kids.app.snapshot_bitcake.BitcakeManager;
+import com.kids.app.snapshot_bitcake.SnapshotType;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
+import com.kids.app.snapshot_bitcake.alagar_venkatesan.AVBitcakeManager;
 import com.kids.app.snapshot_bitcake.snapshot_strategy.ABSnapshotStrategy;
+import com.kids.app.snapshot_bitcake.snapshot_strategy.AVSnapshotStrategy;
 import com.kids.app.snapshot_bitcake.snapshot_strategy.SnapshotStrategy;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -23,11 +29,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </ol>
  * </p>
  */
-public class SnapshotCollectorWorker implements SnapshotCollector {
+public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, AVCollector {
 
 	private volatile boolean working = true;
 	private final AtomicBoolean collecting = new AtomicBoolean(false);
 	private final Map<String, ABSnapshot> collectedABData = new ConcurrentHashMap<>();
+	private final List<Integer> collectedAVData = new CopyOnWriteArrayList<>();
 
 	private BitcakeManager bitcakeManager;
 	private SnapshotStrategy snapshotStrategy;
@@ -35,8 +42,12 @@ public class SnapshotCollectorWorker implements SnapshotCollector {
 	public SnapshotCollectorWorker(SnapshotType snapshotType) {
 		switch(snapshotType) {
 			case ACHARYA_BADRINATH -> {
-				bitcakeManager = new ABBitcakeManager();
+				this.bitcakeManager = new ABBitcakeManager();
 				this.snapshotStrategy = new ABSnapshotStrategy(collectedABData, (ABBitcakeManager) bitcakeManager);
+			}
+			case ALAGAR_VENKATESAN -> {
+				this.bitcakeManager = new AVBitcakeManager();
+				this.snapshotStrategy = new AVSnapshotStrategy(collectedAVData, (AVBitcakeManager)bitcakeManager);
 			}
 			case NONE -> {
 				AppConfig.timestampedErrorPrint("Making snapshot collector without specifying type. Exiting...");
@@ -54,6 +65,19 @@ public class SnapshotCollectorWorker implements SnapshotCollector {
 	@Override
 	public Map<String, ABSnapshot> getCollectedABValues() {
 		return collectedABData;
+	}
+
+	@Override
+	public void markAsDone(int id) {
+		collectedAVData.add(id);
+	}
+
+	@Override
+	public void clearAVData() {
+		if (snapshotStrategy instanceof AVSnapshotStrategy) {
+			((AVSnapshotStrategy) snapshotStrategy).setWait(false);
+			collectedAVData.clear();
+		}
 	}
 
 	@Override

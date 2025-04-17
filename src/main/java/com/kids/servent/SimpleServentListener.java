@@ -2,7 +2,7 @@ package com.kids.servent;
 
 import com.kids.app.AppConfig;
 import com.kids.app.Cancellable;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.handler.implementation.CausalBroadcastHandler;
 import com.kids.servent.message.Message;

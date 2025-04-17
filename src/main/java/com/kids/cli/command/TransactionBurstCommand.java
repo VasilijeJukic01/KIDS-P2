@@ -3,7 +3,7 @@ package com.kids.cli.command;
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
 import com.kids.app.servent.ServentInfo;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.implementation.TransactionMessage;

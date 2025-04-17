@@ -1,7 +1,7 @@
 package com.kids.cli.command;
 
 import com.kids.app.AppConfig;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.cli.CLIParser;
 import com.kids.servent.SimpleServentListener;
 

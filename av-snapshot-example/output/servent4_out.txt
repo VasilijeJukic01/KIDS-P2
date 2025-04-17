@@ -1,0 +1,561 @@
+18:01:49 - Starting servent [4|localhost|1500]
+18:01:49 - Pausing for 1000 ms
+18:01:50 - Got message [Original Sender: 1|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Rebroadcasting... 1
+18:01:50 - Got message [Original Sender: 1|Message ID: 5|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 2
+18:01:50 - Got message [Original Sender: 1|Message ID: 16|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Rebroadcasting... 3
+18:01:50 - Got message [Original Sender: 1|Message ID: 21|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 4
+18:01:50 - Got message [Original Sender: 1|Message ID: 20|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 5
+18:01:50 - Got message [Original Sender: 1|Message ID: 4|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 6
+18:01:50 - Got message [Original Sender: 1|Message ID: 14|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Rebroadcasting... 7
+18:01:50 - Got message [Original Sender: 1|Message ID: 23|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 8
+18:01:50 - Got message [Original Sender: 1|Message ID: 2|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Rebroadcasting... 9
+18:01:50 - Got message [Original Sender: 1|Message ID: 10|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 10
+18:01:50 - Got message [Original Sender: 1|Message ID: 22|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 11
+18:01:50 - Got message [Original Sender: 1|Message ID: 6|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 12
+18:01:50 - Got message [Original Sender: 1|Message ID: 15|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 13
+18:01:50 - Pausing for 14000 ms
+18:01:50 - Got message [Original Sender: 1|Message ID: 17|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Rebroadcasting... 14
+18:01:50 - Got message [Original Sender: 1|Message ID: 24|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 15
+18:01:50 - Got message [Original Sender: 1|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 16
+18:01:50 - Got message [Original Sender: 1|Message ID: 7|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 17
+18:01:50 - Got message [Original Sender: 1|Message ID: 18|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 18
+18:01:50 - Got message [Original Sender: 1|Message ID: 9|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Rebroadcasting... 19
+18:01:50 - Got message [Original Sender: 1|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 20
+18:01:50 - Sending message [Original Sender: 1|Message ID: 20|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:50 - Got message [Original Sender: 1|Message ID: 1|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 21
+18:01:50 - Got message [Original Sender: 1|Message ID: 0|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 0|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 1|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Got message [Original Sender: 1|Message ID: 11|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 2|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 4|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 5|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 1|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 6|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 7|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 9|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 10|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 22
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 10|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 11|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 23
+18:01:50 - Got message [Original Sender: 1|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 14|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 15|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 16|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 17|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 18|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Rebroadcasting... 24
+18:01:50 - Sending message [Original Sender: 1|Message ID: 5|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:50 - Got message [Original Sender: 1|Message ID: 19|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 19|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 20|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 21|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 22|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 23|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 22|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Committing: [Original Sender: 1|Message ID: 24|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 23|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Rebroadcasting... 25
+18:01:50 - Transaction handler got: [Original Sender: 1|Message ID: 24|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:50 - Sending message [Original Sender: 1|Message ID: 10|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:50 - Sending message [Original Sender: 1|Message ID: 15|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 6|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 14|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 21|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 2|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 7|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 16|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 23|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:51 - Got message [Original Sender: 1|Message ID: 20|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Committing # [Original Sender: 4|Message ID: 0|Content: |Type: AV_MARKER|Receiver: 3|Original Receiver: null]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 9|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Sending message [Original Sender: 1|Message ID: 18|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:51 - Got message [Original Sender: 1|Message ID: 6|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Got message [Original Sender: 0|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:51 - Rebroadcasting... 26
+18:01:51 - Sending message [Original Sender: 1|Message ID: 4|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:51 - Got message [Original Sender: 1|Message ID: 5|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Got message [Original Sender: 1|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Sending message [Original Sender: 1|Message ID: 0|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:51 - Got message [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:51 - Rebroadcasting... 27
+18:01:51 - Got message [Original Sender: 0|Message ID: 3|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:51 - Rebroadcasting... 28
+18:01:51 - Got message [Original Sender: 1|Message ID: 21|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Sending message [Original Sender: 1|Message ID: 22|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:51 - Got message [Original Sender: 0|Message ID: 3|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Sending message [Original Sender: 1|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:51 - Got message [Original Sender: 1|Message ID: 10|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Got message [Original Sender: 1|Message ID: 16|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:51 - Already had this. No rebroadcast.
+18:01:51 - Sending message [Original Sender: 1|Message ID: 17|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:51 - Got message [Original Sender: 0|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:51 - Rebroadcasting... 29
+18:01:52 - Sending message [Original Sender: 1|Message ID: 1|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:52 - Got message [Original Sender: 0|Message ID: 14|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Rebroadcasting... 30
+18:01:52 - Sending message [Original Sender: 4|Message ID: 0|Content: |Type: AV_MARKER|Receiver: 3|Original Receiver: null]
+18:01:52 - Sending message [Original Sender: 1|Message ID: 24|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:52 - Sending message [Original Sender: 1|Message ID: 11|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:52 - Got message [Original Sender: 1|Message ID: 15|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 1|Message ID: 19|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:52 - Sending message [Original Sender: 1|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:52 - Got message [Original Sender: 0|Message ID: 2|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 31
+18:01:52 - Got message [Original Sender: 1|Message ID: 2|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Rebroadcasting... 32
+18:01:52 - Got message [Original Sender: 0|Message ID: 23|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 33
+18:01:52 - Got message [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Rebroadcasting... 34
+18:01:52 - Transaction handler got: [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Got message [Original Sender: 1|Message ID: 18|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 5|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Rebroadcasting... 35
+18:01:52 - Got message [Original Sender: 0|Message ID: 13|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 36
+18:01:52 - Got message [Original Sender: 0|Message ID: 12|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Rebroadcasting... 37
+18:01:52 - Got message [Original Sender: 0|Message ID: 6|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 38
+18:01:52 - Got message [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 3|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:52 - Got message [Original Sender: 1|Message ID: 11|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 2|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 3|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 5|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Transaction handler got: [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 6|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 39
+18:01:52 - Sending message [Original Sender: 0|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:52 - Got message [Original Sender: 0|Message ID: 18|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Rebroadcasting... 40
+18:01:52 - Got message [Original Sender: 0|Message ID: 2|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 1|Message ID: 1|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 24|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Rebroadcasting... 41
+18:01:52 - Got message [Original Sender: 0|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 6|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 4|Message ID: 0|Content: |Type: AV_MARKER|Receiver: 1|Original Receiver: null]
+18:01:52 - Got message [Original Sender: 0|Message ID: 18|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 1|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 21|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 42
+18:01:52 - Got message [Original Sender: 0|Message ID: 7|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 7|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Rebroadcasting... 43
+18:01:52 - Got message [Original Sender: 1|Message ID: 7|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:52 - Got message [Original Sender: 1|Message ID: 14|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 10|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 44
+18:01:52 - Got message [Original Sender: 0|Message ID: 17|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Rebroadcasting... 45
+18:01:52 - Got message [Original Sender: 1|Message ID: 22|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 1|Message ID: 23|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 13|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 10|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 14|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:52 - Got message [Original Sender: 0|Message ID: 5|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:52 - Got message [Original Sender: 0|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Rebroadcasting... 46
+18:01:52 - Got message [Original Sender: 1|Message ID: 4|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 1|Message ID: 0|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Rebroadcasting... 47
+18:01:52 - Sending message [Original Sender: 0|Message ID: 14|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:52 - Got message [Original Sender: 0|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 3|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:52 - Got message [Original Sender: 1|Message ID: 24|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:52 - Got message [Original Sender: 0|Message ID: 22|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Rebroadcasting... 48
+18:01:52 - Got message [Original Sender: 1|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:52 - Got message [Original Sender: 0|Message ID: 14|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 1|Message ID: 17|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 24|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:52 - Got message [Original Sender: 1|Message ID: 9|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Sending message [Original Sender: 0|Message ID: 12|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:52 - Sending message [Original Sender: 0|Message ID: 4|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:52 - Sending message [Original Sender: 0|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:52 - Sending message [Original Sender: 0|Message ID: 18|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:52 - Got message [Original Sender: 0|Message ID: 12|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:52 - Already had this. No rebroadcast.
+18:01:52 - Got message [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Committing: [Original Sender: 0|Message ID: 10|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:52 - Transaction handler got: [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:52 - Rebroadcasting... 49
+18:01:52 - Sending message [Original Sender: 0|Message ID: 5|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Got message [Original Sender: 0|Message ID: 7|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 13|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 0|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 23|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 0|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Got message [Original Sender: 0|Message ID: 8|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 2|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:53 - Got message [Original Sender: 0|Message ID: 23|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 21|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:53 - Got message [Original Sender: 0|Message ID: 11|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 11|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 12|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 13|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 14|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 17|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 18|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 21|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 22|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 23|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Committing: [Original Sender: 0|Message ID: 24|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Rebroadcasting... 50
+18:01:53 - Sending message [Original Sender: 0|Message ID: 24|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 6|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 0|Message ID: 17|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 17|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:53 - Got message [Original Sender: 0|Message ID: 11|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 17|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Got message [Original Sender: 0|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Got message [Original Sender: 0|Message ID: 22|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 21|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 1|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 18|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Got message [Original Sender: 0|Message ID: 21|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 24|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 23|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Got message [Original Sender: 0|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 7|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 5|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 2|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 3|Message ID: 0|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:53 - Committing: [Original Sender: 3|Message ID: 0|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:53 - Rebroadcasting... 51
+18:01:53 - Sending message [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 12|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 10|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 10|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 1|Message ID: 19|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 2]
+18:01:53 - Already had this. No rebroadcast.
+18:01:53 - Sending message [Original Sender: 0|Message ID: 22|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:53 - Rebroadcasting... 52
+18:01:53 - Got message [Original Sender: 1|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:53 - Committing: [Original Sender: 1|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:53 - Rebroadcasting... 53
+18:01:53 - Sending message [Original Sender: 0|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 22|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 2|Message ID: 2|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:53 - Rebroadcasting... 54
+18:01:53 - Got message [Original Sender: 2|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:53 - Rebroadcasting... 55
+18:01:53 - Sending message [Original Sender: 0|Message ID: 13|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Sending message [Original Sender: 0|Message ID: 6|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:53 - Got message [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:53 - Rebroadcasting... 56
+18:01:53 - Got message [Original Sender: 2|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:53 - Rebroadcasting... 57
+18:01:53 - Sending message [Original Sender: 0|Message ID: 7|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:53 - Got message [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:53 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 4|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 58
+18:01:54 - Got message [Original Sender: 0|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:54 - Committing: [Original Sender: 0|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:54 - Rebroadcasting... 59
+18:01:54 - Sending message [Original Sender: 2|Message ID: 2|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:54 - Got message [Original Sender: 2|Message ID: 23|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 60
+18:01:54 - Sending message [Original Sender: 1|Message ID: 25|Content: |Type: AV_DONE|Receiver: 3|Original Receiver: 4]
+18:01:54 - Got message [Original Sender: 0|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Rebroadcasting... 61
+18:01:54 - Got message [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 24|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Rebroadcasting... 62
+18:01:54 - Got message [Original Sender: 2|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 14|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 63
+18:01:54 - Got message [Original Sender: 2|Message ID: 22|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Rebroadcasting... 64
+18:01:54 - Got message [Original Sender: 2|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:54 - Got message [Original Sender: 2|Message ID: 24|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 3|Message ID: 0|Content: |Type: AV_DONE|Receiver: 1|Original Receiver: 4]
+18:01:54 - Sending message [Original Sender: 2|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:54 - Got message [Original Sender: 2|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Committing: [Original Sender: 2|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Rebroadcasting... 65
+18:01:54 - Got message [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:54 - Rebroadcasting... 66
+18:01:54 - Got message [Original Sender: 3|Message ID: 0|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 2|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:54 - Sending message [Original Sender: 2|Message ID: 2|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:54 - Got message [Original Sender: 2|Message ID: 14|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 17|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 67
+18:01:54 - Sending message [Original Sender: 0|Message ID: 11|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 2]
+18:01:54 - Got message [Original Sender: 2|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Committing: [Original Sender: 2|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Committing: [Original Sender: 2|Message ID: 2|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 68
+18:01:54 - Sending message [Original Sender: 0|Message ID: 11|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 2]
+18:01:54 - Sending message [Original Sender: 2|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:54 - Sending message [Original Sender: 2|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:54 - Got message [Original Sender: 2|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Rebroadcasting... 69
+18:01:54 - Got message [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Rebroadcasting... 70
+18:01:54 - Got message [Original Sender: 2|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Rebroadcasting... 71
+18:01:54 - Got message [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:54 - Rebroadcasting... 72
+18:01:54 - Got message [Original Sender: 2|Message ID: 7|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Rebroadcasting... 73
+18:01:54 - Sending message [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:54 - Got message [Original Sender: 2|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:54 - Got message [Original Sender: 2|Message ID: 2|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 2|Message ID: 4|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:54 - Got message [Original Sender: 2|Message ID: 22|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Got message [Original Sender: 2|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:54 - Already had this. No rebroadcast.
+18:01:54 - Sending message [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:54 - Got message [Original Sender: 2|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:54 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 18|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Rebroadcasting... 74
+18:01:55 - Got message [Original Sender: 2|Message ID: 18|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 4|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Got message [Original Sender: 2|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 5|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Rebroadcasting... 75
+18:01:55 - Got message [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 23|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 4|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 5|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Rebroadcasting... 76
+18:01:55 - Sending message [Original Sender: 2|Message ID: 23|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Got message [Original Sender: 2|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Rebroadcasting... 77
+18:01:55 - Sending message [Original Sender: 0|Message ID: 25|Content: |Type: AV_DONE|Receiver: 1|Original Receiver: 4]
+18:01:55 - Got message [Original Sender: 2|Message ID: 4|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 7|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 6|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 6|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 7|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Transaction handler got: [Original Sender: 2|Message ID: 8|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:55 - Transaction handler got: [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Transaction handler got: [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 14|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 15|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 17|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 18|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 19|Content: 4|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 22|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:55 - Transaction handler got: [Original Sender: 2|Message ID: 21|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 4]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 23|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Committing: [Original Sender: 2|Message ID: 24|Content: 5|Type: TRANSACTION|Receiver: 4|Original Receiver: 1]
+18:01:55 - Rebroadcasting... 78
+18:01:55 - Sending message [Original Sender: 2|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Got message [Original Sender: 2|Message ID: 5|Content: 1|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 24|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 17|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 0|Message ID: 25|Content: |Type: AV_DONE|Receiver: 3|Original Receiver: 4]
+18:01:55 - Got message [Original Sender: 2|Message ID: 6|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Got message [Original Sender: 2|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 17|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:55 - Got message [Original Sender: 1|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 0|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Got message [Original Sender: 2|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 4|Original Receiver: 3]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 1|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:55 - Got message [Original Sender: 2|Message ID: 17|Content: 2|Type: TRANSACTION|Receiver: 4|Original Receiver: 0]
+18:01:55 - Already had this. No rebroadcast.
+18:01:55 - Sending message [Original Sender: 2|Message ID: 14|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 22|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 14|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 23|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 12|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 4]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 24|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 22|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 1]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 6|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 6|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 7|Content: 5|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 13|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 9|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 0]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 7|Content: 5|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 10|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:55 - Sending message [Original Sender: 2|Message ID: 5|Content: 1|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 18|Content: 4|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 5|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 16|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 11|Content: 1|Type: TRANSACTION|Receiver: 1|Original Receiver: 4]
+18:01:56 - Got message [Original Sender: 2|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:56 - Committing: [Original Sender: 2|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:56 - Rebroadcasting... 79
+18:01:56 - Sending message [Original Sender: 2|Message ID: 3|Content: 3|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:56 - Got message [Original Sender: 2|Message ID: 25|Content: |Type: AV_DONE|Receiver: 4|Original Receiver: 4]
+18:01:56 - Already had this. No rebroadcast.
+18:01:56 - Sending message [Original Sender: 2|Message ID: 20|Content: 2|Type: TRANSACTION|Receiver: 1|Original Receiver: 3]
+18:01:56 - Sending message [Original Sender: 2|Message ID: 18|Content: 4|Type: TRANSACTION|Receiver: 3|Original Receiver: 3]
+18:01:56 - Committing: [Original Sender: 4|Message ID: 1|Content: |Type: AV_TERMINATE|Receiver: 3|Original Receiver: null]
+18:01:56 - AV Termination
+18:01:56 - Recorded bitcake amount: 1016
+18:01:56 - Unreceived bitcake amount: 11 from 0
+18:01:56 - Unreceived bitcake amount: 0 from 1
+18:01:56 - Unreceived bitcake amount: 13 from 2
+18:01:56 - Unreceived bitcake amount: 0 from 3
+18:01:56 - Sent bitcake amount: 0 from 1
+18:01:56 - Sent bitcake amount: 0 from 3
+18:01:56 - Total node bitcake amount: 1040
+18:01:56 - Sending message [Original Sender: 2|Message ID: 25|Content: |Type: AV_DONE|Receiver: 1|Original Receiver: 4]
+18:01:57 - Sending message [Original Sender: 4|Message ID: 1|Content: |Type: AV_TERMINATE|Receiver: 1|Original Receiver: null]
+18:01:57 - Sending message [Original Sender: 4|Message ID: 1|Content: |Type: AV_TERMINATE|Receiver: 3|Original Receiver: null]
+18:01:57 - Sending message [Original Sender: 2|Message ID: 25|Content: |Type: AV_DONE|Receiver: 3|Original Receiver: 4]
+18:02:04 - My info: [4|localhost|1500]
+18:02:04 - Neighbors:
+18:02:04 - 1 3 
+18:02:04 - Stopping...

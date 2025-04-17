@@ -1,9 +1,12 @@
 package com.kids.app;
 
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
-import com.kids.servent.handler.implementation.ABSnapshotRequestHandler;
-import com.kids.servent.handler.implementation.ABSnapshotResponseHandler;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
+import com.kids.servent.handler.implementation.ab.ABSnapshotRequestHandler;
+import com.kids.servent.handler.implementation.ab.ABSnapshotResponseHandler;
 import com.kids.servent.handler.implementation.TransactionHandler;
+import com.kids.servent.handler.implementation.av.AVDoneHandler;
+import com.kids.servent.handler.implementation.av.AVMarkerHandler;
+import com.kids.servent.handler.implementation.av.AVTerminateHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.implementation.BasicMessage;
 import lombok.Getter;
@@ -37,6 +40,13 @@ public class CausalBroadcast {
     @Getter  private static final List<Message> sent = new CopyOnWriteArrayList<>();
     @Getter  private static final List<Message> received = new CopyOnWriteArrayList<>();
     private static final Set<Message> receivedAbRequest = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    // AV Snapshot
+    public static int initiatorId;
+    public static int recordedAmount;
+    public static Map<Integer, Integer> markerVectorClock = null;
+    public static final Map<Integer, Integer> inputChannel = new ConcurrentHashMap<>();
+    public static final Map<Integer, Integer> outputChannel = new ConcurrentHashMap<>();
 
     /**
      * Initializes the vector clock with the given number of servents.
@@ -124,6 +134,17 @@ public class CausalBroadcast {
                                 if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id())
                                     executor.submit(new ABSnapshotResponseHandler(basicMessage, snapshotCollector));
                             }
+                            case AV_MARKER -> {
+                                executor.submit(new AVMarkerHandler(basicMessage, snapshotCollector.getBitcakeManager().getCurrentBitcakeAmount()));
+                            }
+                            case AV_DONE -> {
+                                if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+                                    executor.submit(new AVDoneHandler(basicMessage, snapshotCollector));
+                                }
+                            }
+                            case AV_TERMINATE -> {
+                                executor.submit(new AVTerminateHandler(basicMessage, snapshotCollector));
+                            }
                         }
 
                         iterator.remove();
@@ -131,6 +152,29 @@ public class CausalBroadcast {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Checks if a given transaction should be recorded for the AV snapshot.
+     * If the vector clock condition is met, the transferred amount is stored in the input channel.
+     * <p>
+     * The `markersVectorClock` is the recorded vector clock when the snapshot starts.
+     * Comparing the sender's vector clock with `markersVectorClock` determines whether
+     * the transaction occurred after the marker was sent and should be included.
+     * </p>
+     * @param senderVectorClock the vector clock of the transaction's sender
+     * @param neighbor the ID of the neighbor sending or receiving this transaction
+     * @param amount the amount of bitcake involved in the transaction
+     */
+    public static void recordTransaction(Map<Integer, Integer> senderVectorClock, int neighbor, int amount) {
+        if (markerVectorClock == null) return;
+
+        if (senderVectorClock.get(initiatorId) <= markerVectorClock.get(initiatorId)) {
+            int oldAmount;
+            if (inputChannel.get(neighbor) == null) oldAmount = 0;
+            else oldAmount = inputChannel.get(neighbor);
+            inputChannel.put(neighbor, oldAmount + amount);
         }
     }
 

@@ -1,12 +1,12 @@
-package com.kids.servent.handler.implementation;
+package com.kids.servent.handler.implementation.ab;
 
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
-import com.kids.servent.message.implementation.ABSnapshotResponseMessage;
+import com.kids.servent.message.implementation.ab.ABSnapshotResponseMessage;
 import com.kids.servent.message.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 

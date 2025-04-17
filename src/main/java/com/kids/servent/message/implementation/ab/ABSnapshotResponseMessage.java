@@ -1,9 +1,10 @@
-package com.kids.servent.message.implementation;
+package com.kids.servent.message.implementation.ab;
 
 import com.kids.app.AppConfig;
 import com.kids.app.servent.ServentInfo;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
+import com.kids.servent.message.implementation.BasicMessage;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -17,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * This message contains the snapshot data, including sent and received transactions.
  */
 @Getter
-public class ABSnapshotResponseMessage extends BasicMessage{
+public class ABSnapshotResponseMessage extends BasicMessage {
 
     @Serial
     private static final long serialVersionUID = 1932837451964281053L;

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * This class implements the logic for starting multiple servent instances.
- * 
+ * <p>
  * To use it, invoke startServentTest with a directory name as parameter.
  * This directory should include:
  * <ul>
@@ -100,6 +100,7 @@ public class MultipleServentStarter {
 	
 	public static void main(String[] args) {
 		startServentTest("ab-snapshot-example");
+		// startServentTest("av-snapshot-example");
 	}
 
 }

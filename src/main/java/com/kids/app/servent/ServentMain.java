@@ -2,9 +2,9 @@ package com.kids.app.servent;
 
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
-import com.kids.app.snapshot_bitcake.NullSnapshotCollector;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
-import com.kids.app.snapshot_bitcake.SnapshotCollectorWorker;
+import com.kids.app.snapshot_bitcake.snapshot_collector.NullSnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollectorWorker;
 import com.kids.app.snapshot_bitcake.SnapshotType;
 import com.kids.cli.CLIParser;
 import com.kids.servent.SimpleServentListener;

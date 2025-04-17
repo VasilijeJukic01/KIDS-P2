@@ -2,7 +2,7 @@ package com.kids.cli;
 
 import com.kids.app.AppConfig;
 import com.kids.app.Cancellable;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.cli.command.*;
 import com.kids.servent.SimpleServentListener;
 

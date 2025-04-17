@@ -3,7 +3,7 @@ package com.kids.servent.handler.implementation;
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
 import com.kids.app.servent.ServentInfo;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.util.MessageUtil;

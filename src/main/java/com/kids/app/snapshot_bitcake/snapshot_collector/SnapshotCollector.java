@@ -1,9 +1,7 @@
-package com.kids.app.snapshot_bitcake;
+package com.kids.app.snapshot_bitcake.snapshot_collector;
 
 import com.kids.app.Cancellable;
-import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
-
-import java.util.Map;
+import com.kids.app.snapshot_bitcake.BitcakeManager;
 
 /**
  * Describes a snapshot collector. Made not-so-flexibly for readability.
@@ -13,6 +11,5 @@ import java.util.Map;
  */
 public interface SnapshotCollector extends Runnable, Cancellable {
 	BitcakeManager getBitcakeManager();
-	Map<String, ABSnapshot> getCollectedABValues();
 	void startCollecting();
 }

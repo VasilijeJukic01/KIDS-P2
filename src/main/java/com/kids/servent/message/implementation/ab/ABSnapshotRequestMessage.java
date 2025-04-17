@@ -1,7 +1,8 @@
-package com.kids.servent.message.implementation;
+package com.kids.servent.message.implementation.ab;
 
 import com.kids.app.servent.ServentInfo;
 import com.kids.servent.message.MessageType;
+import com.kids.servent.message.implementation.BasicMessage;
 
 import java.io.Serial;
 import java.util.Map;

@@ -1,12 +1,13 @@
-package com.kids.servent.handler.implementation;
+package com.kids.servent.handler.implementation.ab;
 
 import com.kids.app.AppConfig;
-import com.kids.app.snapshot_bitcake.SnapshotCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.ABCollector;
+import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
-import com.kids.servent.message.implementation.ABSnapshotResponseMessage;
+import com.kids.servent.message.implementation.ab.ABSnapshotResponseMessage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class ABSnapshotResponseHandler  implements MessageHandler {
                         response.getReceived()
                 );
 
-                snapshotCollector.getCollectedABValues().put("node " + clientMessage.getOriginalSenderInfo().id(), snapshotResult);
+                ((ABCollector) snapshotCollector).getCollectedABValues().put("node " + clientMessage.getOriginalSenderInfo().id(), snapshotResult);
             } else {
                 AppConfig.timestampedErrorPrint("SNAPSHOT RESPONSE HANDLER: Amount handler got: " + clientMessage);
             }
