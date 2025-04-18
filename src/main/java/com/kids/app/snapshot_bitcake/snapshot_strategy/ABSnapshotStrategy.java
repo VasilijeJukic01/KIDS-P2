@@ -5,11 +5,13 @@ import com.kids.app.CausalBroadcast;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
 import com.kids.servent.message.Message;
+import com.kids.servent.message.MessageType;
 import com.kids.servent.message.implementation.ab.ABSnapshotRequestMessage;
 import com.kids.servent.message.util.MessageUtil;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,8 +38,8 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
         ABSnapshot snapshotResult = new ABSnapshot(
                 AppConfig.myServentInfo.id(),
                 bitcakeManager.getCurrentBitcakeAmount(),
-                instance.getSent(),
-                instance.getReceived()
+                new ArrayList<>(instance.getSent()),
+                new ArrayList<>(instance.getReceived())
         );
         collectedData.put("node " + AppConfig.myServentInfo.id(), snapshotResult);
 
@@ -52,35 +54,50 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
 
     @Override
     public void processCollectedData() {
-        int sum = 0;
+        int nodeSum = 0;
+        for (Map.Entry<String, ABSnapshot> entry : collectedData.entrySet()) {
+            int nodeAmount = entry.getValue().getAmount();
+            nodeSum += nodeAmount;
+            AppConfig.timestampedStandardPrint("Snapshot for " + entry.getKey() + " = " + nodeAmount + " bitcake");
+        }
 
-        for (Map.Entry<String, ABSnapshot> result : collectedData.entrySet()) {
-            int bitCakeAmount = result.getValue().getAmount();
-            List<Message> sentTransactions = result.getValue().getSent();
+        Map<String, Message> allSentMessages = new HashMap<>();
+        Map<String, Message> allReceivedMessages = new HashMap<>();
 
-            sum += bitCakeAmount;
-            AppConfig.timestampedStandardPrint("Snapshot for " + result.getKey() + " = " + bitCakeAmount + " bitcake");
+        // Collect all sent and received messages
+        for (ABSnapshot snapshot : collectedData.values()) {
+            snapshot.getSent().stream()
+                    .filter(sent -> sent.getMessageType() == MessageType.TRANSACTION)
+                    .forEach(sent -> allSentMessages.put(getUniqueMessageKey(sent), sent));
 
-            // Check for unprocessed transactions
-            for (Message sent : sentTransactions) {
-                ABSnapshot abSnapshotResult = collectedData.get("node " + sent.getOriginalReceiverInfo().id());
-                List<Message> receivedTransactions = abSnapshotResult.getReceived();
-
-                boolean exist = receivedTransactions.stream()
-                        .filter(received -> sent.getMessageId() == received.getMessageId())
-                        .filter(received -> sent.getOriginalSenderInfo().id() == received.getOriginalSenderInfo().id())
-                        .anyMatch(received -> sent.getOriginalReceiverInfo().id() == received.getOriginalReceiverInfo().id());
-
-                if (!exist) {
-                    AppConfig.timestampedStandardPrint("Info for unprocessed transaction: " + sent.getMessageText() + " bitcake");
-                    int amountNumber = Integer.parseInt(sent.getMessageText());
-                    sum += amountNumber;
-                }
+            snapshot.getReceived().stream()
+                    .filter(received -> received.getMessageType() == MessageType.TRANSACTION)
+                    .forEach(received -> allReceivedMessages.put(getUniqueMessageKey(received), received));
+        }
+        
+        // Messages in transit
+        int inTransitSum = 0;
+        for (Map.Entry<String, Message> entry : allSentMessages.entrySet()) {
+            String key = entry.getKey();
+            if (!allReceivedMessages.containsKey(key)) {
+                Message message = entry.getValue();
+                int amount = Integer.parseInt(message.getMessageText());
+                inTransitSum += amount;
+                
+                AppConfig.timestampedStandardPrint("Unprocessed transaction "
+                        + "[" + message.getOriginalSenderInfo().id() + " to " + message.getOriginalReceiverInfo().id() + "]: "  + amount + " bitcake");
             }
         }
 
-        AppConfig.timestampedStandardPrint("System bitcake count: " + sum);
+        int total = nodeSum + inTransitSum;
+        AppConfig.timestampedStandardPrint("Total node amount: " + nodeSum + " bitcake");
+        AppConfig.timestampedStandardPrint("Total in-transit amount: " + inTransitSum + " bitcake");
+        AppConfig.timestampedStandardPrint("System bitcake count: " + total);
+
         collectedData.clear();
     }
 
+    private String getUniqueMessageKey(Message message) {
+        return message.getOriginalSenderInfo().id() + "-" + message.getMessageId() + "-" + message.getOriginalReceiverInfo().id();
+    }
 }
