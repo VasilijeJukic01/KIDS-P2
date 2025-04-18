@@ -1,89 +1,74 @@
 package com.kids.app;
 
+import com.kids.app.handler_factory.MessageHandlerFactory;
 import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
-import com.kids.servent.handler.implementation.ab.ABSnapshotRequestHandler;
-import com.kids.servent.handler.implementation.ab.ABSnapshotResponseHandler;
-import com.kids.servent.handler.implementation.TransactionHandler;
-import com.kids.servent.handler.implementation.av.AVDoneHandler;
-import com.kids.servent.handler.implementation.av.AVMarkerHandler;
-import com.kids.servent.handler.implementation.av.AVTerminateHandler;
-import com.kids.servent.handler.implementation.cc.CCResumeHandler;
-import com.kids.servent.handler.implementation.cc.CCSnapshotRequestHandler;
-import com.kids.servent.handler.implementation.cc.CCSnapshotResponseHandler;
+import com.kids.app.processing_strategy.CausalMessageProcessingStrategy;
+import com.kids.app.processing_strategy.FIFOMessageProcessingStrategy;
+import com.kids.app.processing_strategy.MessageProcessingStrategy;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
 import com.kids.servent.message.implementation.BasicMessage;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 
 /**
- * This class contains shared data for the Causal Broadcast implementation:
- * <ul>
- * <li> Vector clock for current instance
- * <li> Commited message list
- * <li> Pending queue
- * </ul>
- * As well as operations for working with all of the above.
- *
- * @author bmilojkovic
- *
+ * Singleton class that manages the causal broadcast mechanism in a distributed system.
+ * It handles message processing, vector clock management, and snapshot collection.
  */
 public class CausalBroadcast {
 
-    private static final ExecutorService executor = Executors.newWorkStealingPool();
+    @Getter private static final CausalBroadcast instance;
 
-    @Getter private static final Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>();
-    private static final Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();
-    private static final Object lock = new Object();
-    @Getter private static SnapshotCollector snapshotCollector;
+    private final ExecutorService executor = Executors.newWorkStealingPool();
+
+    @Getter private final VectorClock vectorClock = new VectorClock();
+    private final Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();
+    private final Object lock = new Object();
+    @Getter private SnapshotCollector snapshotCollector;
 
     // AB Snapshot
-    @Getter  private static final List<Message> sent = new CopyOnWriteArrayList<>();
-    @Getter  private static final List<Message> received = new CopyOnWriteArrayList<>();
-    private static final Set<Message> receivedAbRequest = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    @Getter private final List<Message> sent = new CopyOnWriteArrayList<>();
+    @Getter private final List<Message> received = new CopyOnWriteArrayList<>();
+    private final Set<BasicMessage> receivedAbRequest = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // AV Snapshot
-    public static int initiatorId;
-    public static int recordedAmount;
-    public static Map<Integer, Integer> markerVectorClock = null;
-    public static final Map<Integer, Integer> inputChannel = new ConcurrentHashMap<>();
-    public static final Map<Integer, Integer> outputChannel = new ConcurrentHashMap<>();
+    @Getter @Setter private int initiatorId;
+    @Getter @Setter private int recordedAmount;
+    @Getter @Setter private Map<Integer, Integer> markerVectorClock = null;
+    private final Map<Integer, Integer> inputChannel = new ConcurrentHashMap<>();
+    private final Map<Integer, Integer> outputChannel = new ConcurrentHashMap<>();
+
+    // Message processing strategies
+    private MessageProcessingStrategy fifoStrategy;
+    private MessageProcessingStrategy causalStrategy;
+    private MessageHandlerFactory messageHandlerFactory;
+
+    static {
+        instance = new CausalBroadcast();
+    }
+
+    private CausalBroadcast() {
+        initializeStrategies();
+    }
+
+    private void initializeStrategies() {
+        Consumer<Message> messageProcessor = this::processMessage;
+
+        this.fifoStrategy = new FIFOMessageProcessingStrategy(pendingMessages, vectorClock, messageProcessor, lock);
+        this.causalStrategy = new CausalMessageProcessingStrategy(pendingMessages, vectorClock, messageProcessor, lock);
+    }
 
     /**
      * Initializes the vector clock with the given number of servents.
      *
      * @param serventCount the number of servents in the system.
      */
-    public static void initializeVectorClock(int serventCount) {
-        Stream.iterate(0, i -> i + 1)
-                .limit(serventCount)
-                .forEach(i -> vectorClock.put(i, 0));
-    }
-
-    /**
-     * Compares two vector clocks.
-     * Returns true if any entry in clock2 is greater than the corresponding entry in clock1.
-     *
-     * @param clock1 the first vector clock.
-     * @param clock2 the second vector clock.
-     * @return true if clock2 is greater in any entry, false otherwise.
-     * @throws IllegalArgumentException if the clocks are of different sizes.
-     */
-    private static boolean otherClockGreater(Map<Integer, Integer> clock1, Map<Integer, Integer> clock2) {
-        if (clock1.size() != clock2.size()) {
-            throw new IllegalArgumentException("Clocks are not same size how why");
-        }
-
-        for(int i = 0; i < clock1.size(); i++) {
-            if (clock2.get(i) > clock1.get(i)) {
-                return true;
-            }
-        }
-
-        return false;
+    public void initializeVectorClock(int serventCount) {
+        vectorClock.initialize(serventCount);
     }
 
     /**
@@ -92,7 +77,7 @@ public class CausalBroadcast {
      *
      * @param newMessage the message triggering the clock update.
      */
-    public static void causalClockIncrement(Message newMessage) {
+    public void causalClockIncrement(Message newMessage) {
         AppConfig.timestampedStandardPrint("Committing # " + newMessage);
         incrementClock(newMessage.getOriginalSenderInfo().id());
         checkPendingMessages();
@@ -101,151 +86,56 @@ public class CausalBroadcast {
     /**
      * Checks the pending messages queue and commits messages that satisfy the causal order.
      */
-    public static void checkPendingMessages() {
-        if (AppConfig.IS_FIFO) processPendingMessagesFIFO();
-        else processPendingMessagesCausal();
+    public void checkPendingMessages() {
+        if (AppConfig.IS_FIFO) fifoStrategy.processPendingMessages();
+        else causalStrategy.processPendingMessages();
     }
 
-    private static void processPendingMessagesFIFO() {
-        synchronized (lock) {
-            boolean working = true;
-
-            while (working) {
-                working = false;
-                Iterator<Message> iterator = pendingMessages.iterator();
-
-                while (iterator.hasNext()) {
-                    Message pendingMessage = iterator.next();
-                    if (isCausalityViolatedFIFO(pendingMessage)) {
-                        continue;
-                    }
-
-                    processMessage(pendingMessage);
-                    iterator.remove();
-                    working = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    private static boolean isCausalityViolatedFIFO(Message pendingMessage) {
-        Map<Integer, Integer> senderVectorClock = pendingMessage.getSenderVectorClock();
-        if (senderVectorClock == null) return true;
-
-        int senderId = pendingMessage.getOriginalSenderInfo().id();
-
-        for (Map.Entry<Integer, Integer> entry : senderVectorClock.entrySet()) {
-            int id = entry.getKey();
-            int clock = entry.getValue();
-            int localClock = vectorClock.getOrDefault(id, 0);
-
-            if (id == senderId) if (clock != localClock + 1) return true;
-            else if (clock > localClock) return true;
-        }
-
-        return false;
-    }
-
-    private static void processPendingMessagesCausal() {
-        boolean working = true;
-
-        while (working) {
-            working = false;
-
-            synchronized (lock) {
-                Iterator<Message> iterator = pendingMessages.iterator();
-                Map<Integer, Integer> myVectorClock = getVectorClock();
-
-                while (iterator.hasNext()) {
-                    Message pendingMessage = iterator.next();
-                    BasicMessage basicMessage = (BasicMessage) pendingMessage;
-
-                    if (!otherClockGreater(myVectorClock, basicMessage.getSenderVectorClock())) {
-                        processMessage(pendingMessage);
-                        iterator.remove();
-                        working = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private static void processMessage(Message pendingMessage) {
+    /**
+     * Process a message using the appropriate handler
+     *
+     * @param pendingMessage the message to process
+     */
+    private void processMessage(Message pendingMessage) {
         BasicMessage basicMessage = (BasicMessage) pendingMessage;
         AppConfig.timestampedStandardPrint("Committing: " + pendingMessage);
         incrementClock(pendingMessage.getOriginalSenderInfo().id());
 
         try {
-            switch (basicMessage.getMessageType()) {
-                case TRANSACTION -> {
-                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
-                        executor.submit(new TransactionHandler(basicMessage, snapshotCollector.getBitcakeManager()));
-                    }
-                }
-                case AB_SNAPSHOT_REQUEST -> {
-                    if (receivedAbRequest.add(basicMessage)) {
-                        executor.submit(new ABSnapshotRequestHandler(basicMessage, snapshotCollector));
-                    }
-                }
-                case AB_SNAPSHOT_RESPONSE -> {
-                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
-                        executor.submit(new ABSnapshotResponseHandler(basicMessage, snapshotCollector));
-                    }
-                }
-                case AV_MARKER -> {
-                    executor.submit(new AVMarkerHandler(basicMessage, snapshotCollector.getBitcakeManager().getCurrentBitcakeAmount()));
-                }
-                case AV_DONE -> {
-                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
-                        executor.submit(new AVDoneHandler(basicMessage, snapshotCollector));
-                    }
-                }
-                case AV_TERMINATE -> {
-                    executor.submit(new AVTerminateHandler(basicMessage, snapshotCollector));
-                }
-                case CC_SNAPSHOT_REQUEST -> {
-                    AppConfig.timestampedStandardPrint("Processing CC_SNAPSHOT_REQUEST: " + basicMessage);
-                    executor.submit(new CCSnapshotRequestHandler(basicMessage, snapshotCollector));
-                }
-                case CC_SNAPSHOT_RESPONSE -> {
-                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
-                        executor.submit(new CCSnapshotResponseHandler(basicMessage, snapshotCollector));
-                    }
-                }
-                case CC_RESUME -> {
-                    executor.submit(new CCResumeHandler(basicMessage, snapshotCollector));
-                }
-                default -> {
-                    AppConfig.timestampedErrorPrint("Unhandled message type: " + basicMessage.getMessageType());
-                }
+            if (messageHandlerFactory == null) {
+                handleMessageWithFallback(basicMessage);
+                return;
             }
+            
+            Runnable handler = messageHandlerFactory.createHandler(basicMessage);
+            if (handler != null) executor.submit(handler);
         } catch (Exception e) {
             AppConfig.timestampedErrorPrint("Error handling message " + basicMessage + ": " + e.getMessage());
         }
+    }
+    
+    /**
+     * Fallback handler for when messageHandlerFactory is not yet initialized
+     */
+    private void handleMessageWithFallback(BasicMessage message) {
+        AppConfig.timestampedStandardPrint("Using fallback handler for message: " + message);
+        // Store the message to process it later when the factory is available
+        pendingMessages.add(message);
     }
 
     /**
      * Checks if a given transaction should be recorded for the AV snapshot.
      * If the vector clock condition is met, the transferred amount is stored in the input channel.
-     * <p>
-     * The `markersVectorClock` is the recorded vector clock when the snapshot starts.
-     * Comparing the sender's vector clock with `markersVectorClock` determines whether
-     * the transaction occurred after the marker was sent and should be included.
-     * </p>
+     *
      * @param senderVectorClock the vector clock of the transaction's sender
      * @param neighbor the ID of the neighbor sending or receiving this transaction
      * @param amount the amount of bitcake involved in the transaction
      */
-    public static void recordTransaction(Map<Integer, Integer> senderVectorClock, int neighbor, int amount) {
+    public void recordTransaction(Map<Integer, Integer> senderVectorClock, int neighbor, int amount) {
         if (markerVectorClock == null) return;
 
         if (senderVectorClock.get(initiatorId) <= markerVectorClock.get(initiatorId)) {
-            int oldAmount;
-            if (inputChannel.get(neighbor) == null) oldAmount = 0;
-            else oldAmount = inputChannel.get(neighbor);
-            inputChannel.put(neighbor, oldAmount + amount);
+            inputChannel.compute(neighbor, (key, oldValue) -> (oldValue == null ? 0 : oldValue) + amount);
         }
     }
 
@@ -254,27 +144,68 @@ public class CausalBroadcast {
      *
      * @param serventId the identifier of the servent.
      */
-    public static void incrementClock(int serventId) {
-        vectorClock.computeIfPresent(serventId, (key, oldValue) -> oldValue + 1);
+    public void incrementClock(int serventId) {
+        vectorClock.increment(serventId);
     }
 
-    public static void injectSnapshotCollector(SnapshotCollector snapshotCollector) {
-        CausalBroadcast.snapshotCollector = snapshotCollector;
+    /**
+     * Injects a snapshot collector into the broadcast system.
+     * Also initializes the message handler factory which depends on it.
+     *
+     * @param snapshotCollector the snapshot collector to inject
+     */
+    public void injectSnapshotCollector(SnapshotCollector snapshotCollector) {
+        this.snapshotCollector = snapshotCollector;
+        this.messageHandlerFactory = new MessageHandlerFactory(snapshotCollector, receivedAbRequest);
+        
+        // Process any pending messages that were waiting for the factory
+        if (!pendingMessages.isEmpty()) checkPendingMessages();
     }
 
-    public static void addPendingMessage(Message msg) {
+    /**
+     * Adds a message to the pending queue.
+     *
+     * @param msg the message to add
+     */
+    public void addPendingMessage(Message msg) {
         if (msg.getMessageType() == MessageType.CC_SNAPSHOT_REQUEST) {
             AppConfig.timestampedStandardPrint("Adding CC_SNAPSHOT_REQUEST to pending messages: " + msg);
         }
         pendingMessages.add(msg);
     }
 
-    public static void addReceivedMessage(Message receivedMessage) {
+    /**
+     * Adds a received message to the list.
+     *
+     * @param receivedMessage the received message
+     */
+    public void addReceivedMessage(Message receivedMessage) {
         received.add(receivedMessage);
     }
 
-    public static void addSentMessage(Message sentMessage) {
+    /**
+     * Adds a sent message to the list.
+     *
+     * @param sentMessage the sent message
+     */
+    public void addSentMessage(Message sentMessage) {
         sent.add(sentMessage);
     }
 
+    public Map<Integer, Integer> getInputChannel() {
+        return Collections.unmodifiableMap(inputChannel);
+    }
+
+    public Map<Integer, Integer> getOutputChannel() {
+        return Collections.unmodifiableMap(outputChannel);
+    }
+    
+    /**
+     * For compatibility with existing code that uses the static vector clock
+     * 
+     * @return The current vector clock values as a Map
+     */
+    public Map<Integer, Integer> getVectorClockValues() {
+        return vectorClock.getClockValues();
+    }
 }

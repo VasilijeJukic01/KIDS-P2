@@ -23,9 +23,7 @@ public class PauseCommand implements CLICommand {
 			AppConfig.timestampedStandardPrint("Pausing for " + timeToSleep + " ms");
 			try {
 				Thread.sleep(timeToSleep);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			} catch (InterruptedException ignored) { }
 			
 		} catch (NumberFormatException e) {
 			AppConfig.timestampedErrorPrint("Pause command should have one int argument, which is time in ms.");

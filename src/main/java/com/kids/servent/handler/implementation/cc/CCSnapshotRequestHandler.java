@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Handler for snapshot request messages in the Coordinated Checkpointing algorithm.
- * When a node receives a snapshot request, it records its local state, enters snapshot mode,
- * and forwards the request to its neighbors.
+ * <p>
+ * When a node receives a snapshot request, it records its local state, enters snapshot mode and forwards the request to its neighbors.
  */
 @RequiredArgsConstructor
 public class CCSnapshotRequestHandler implements MessageHandler {

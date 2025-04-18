@@ -101,7 +101,6 @@ public class SimpleServentListener implements Runnable, Cancellable {
 					messageHandler = new CausalBroadcastHandler(
 							clientMessage,
 							receivedBroadcasts,
-							snapshotCollector,
 							lock
 					);
 				}

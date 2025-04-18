@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This worker implements the sending of messages for FIFO causal broadcast.
- * 
+ * <p>
  * It waits for objects from two concurrent queues, one with regular messages
  * the other with CL_REQUEST messages.
- * 
+ * <p>
  * If a message is found in the marker queue, it is sent right away. If not,
  * we check that we are white, and then we check the regular messages queue.
  * 
@@ -44,10 +44,7 @@ public class FifoSendWorker implements Runnable, Cancellable {
 				}
 				
 				if (messageToSend == null) continue;
-				
-				if (messageToSend.getMessageType() == MessageType.POISON) {
-					break;
-				}
+				if (messageToSend.getMessageType() == MessageType.POISON) break;
 				
 				Socket sendSocket;
 				
@@ -112,7 +109,6 @@ public class FifoSendWorker implements Runnable, Cancellable {
 
 			} catch (Exception e) {
 				AppConfig.timestampedErrorPrint("Error in FifoSendWorker: " + e.getMessage());
-				e.printStackTrace();
 			}
 		}
 	}

@@ -22,7 +22,8 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
     @Override
     public void initiateSnapshot() {
         // Create SNAPSHOT_REQUEST message
-        Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+        CausalBroadcast instance = CausalBroadcast.getInstance();
+        Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(instance.getVectorClockValues());
         Message request = new ABSnapshotRequestMessage(AppConfig.myServentInfo, null, null, vectorClock);
 
         // Send SNAPSHOT_REQUEST message to all neighbors
@@ -35,12 +36,12 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
         ABSnapshot snapshotResult = new ABSnapshot(
                 AppConfig.myServentInfo.id(),
                 bitcakeManager.getCurrentBitcakeAmount(),
-                CausalBroadcast.getSent(),
-                CausalBroadcast.getReceived()
+                instance.getSent(),
+                instance.getReceived()
         );
         collectedData.put("node " + AppConfig.myServentInfo.id(), snapshotResult);
 
-        CausalBroadcast.causalClockIncrement(request);
+        instance.causalClockIncrement(request);
     }
 
     @Override

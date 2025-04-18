@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Handler for snapshot response messages in the Coordinated Checkpointing algorithm.
- * When the initiator receives a response from a node, it adds the node's snapshot to
- * the collector. Once all nodes have responded, it sends resume messages.
+ * <p>
+ * When the initiator receives a response from a node, it adds the node's snapshot to the collector. Once all nodes have responded, it sends resume messages.
  */
 @RequiredArgsConstructor
 public class CCSnapshotResponseHandler implements MessageHandler {

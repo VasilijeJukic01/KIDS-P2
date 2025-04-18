@@ -95,7 +95,6 @@ public class CCBitcakeManager implements BitcakeManager {
             }
         } catch (Exception e) {
             AppConfig.timestampedErrorPrint("Error handling snapshot request: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

@@ -175,7 +175,7 @@ public class AppConfig {
 			ServentInfo newInfo = new ServentInfo("localhost", i, serventPort, neighborList);
 			SERVENT_INFO_LIST.add(newInfo);
 		}
-		CausalBroadcast.initializeVectorClock(serventCount);
+		CausalBroadcast.getInstance().initializeVectorClock(serventCount);
 	}
 	
 	/**

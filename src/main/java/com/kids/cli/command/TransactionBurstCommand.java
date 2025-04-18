@@ -60,7 +60,8 @@ public class TransactionBurstCommand implements CLICommand {
 							receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
 						}
 
-						Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+						CausalBroadcast instance = CausalBroadcast.getInstance();
+						Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(instance.getVectorClockValues());
 
 						transaction = new TransactionMessage(
 								AppConfig.myServentInfo,
@@ -72,12 +73,12 @@ public class TransactionBurstCommand implements CLICommand {
 						);
 
 						if (snapshotCollector.getBitcakeManager() instanceof ABBitcakeManager) {
-							CausalBroadcast.addSentMessage(transaction);
+							instance.addSentMessage(transaction);
 						}
 
 						// Deduct the amount and send the message
 						transaction.sendEffect();
-						CausalBroadcast.causalClockIncrement(transaction);
+						instance.causalClockIncrement(transaction);
 					}
 
 					AppConfig.myServentInfo.neighbors()

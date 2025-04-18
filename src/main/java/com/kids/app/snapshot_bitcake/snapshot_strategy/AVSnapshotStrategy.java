@@ -25,21 +25,21 @@ public class AVSnapshotStrategy implements SnapshotStrategy {
 
     @Override
     public void initiateSnapshot() {
-        Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
-        CausalBroadcast.initiatorId = AppConfig.myServentInfo.id();
+        CausalBroadcast instance = CausalBroadcast.getInstance();
+        Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(instance.getVectorClockValues());
+        instance.setInitiatorId(AppConfig.myServentInfo.id());
 
-        // Initialize input and output channels
+        // Initialize input and output channels through the transaction recording mechanism
         AppConfig.myServentInfo.neighbors().forEach(
                 neighbor -> {
-                    CausalBroadcast.inputChannel.put(neighbor, 0);
-                    CausalBroadcast.outputChannel.put(neighbor, 0);
+                    instance.recordTransaction(vectorClock, neighbor, 0);
                 }
         );
 
         // Create MARKER message
-        CausalBroadcast.recordedAmount = bitcakeManager.getCurrentBitcakeAmount();
+        instance.setRecordedAmount(bitcakeManager.getCurrentBitcakeAmount());
         Message markerMessage = new AVMarkerMessage(AppConfig.myServentInfo, null, null, vectorClock);
-        CausalBroadcast.markerVectorClock = markerMessage.getSenderVectorClock();
+        instance.setMarkerVectorClock(markerMessage.getSenderVectorClock());
 
         // Send MARKER message to all neighbors
         for (Integer neighbor : AppConfig.myServentInfo.neighbors()) {
@@ -47,14 +47,15 @@ public class AVSnapshotStrategy implements SnapshotStrategy {
             MessageUtil.sendMessage(markerMessage);
         }
 
-        CausalBroadcast.causalClockIncrement(markerMessage);
+        instance.causalClockIncrement(markerMessage);
     }
 
     @Override
     public boolean isSnapshotComplete() {
         // We have collected all DONE messages
         if (collectedAVData.size() + 1 == AppConfig.getServentCount()) {
-            Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+            CausalBroadcast instance = CausalBroadcast.getInstance();
+            Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(instance.getVectorClockValues());
 
             // Create TERMINATE message
             Message terminateMessage = new AVTerminateMessage(
@@ -70,8 +71,8 @@ public class AVSnapshotStrategy implements SnapshotStrategy {
                 MessageUtil.sendMessage(terminateMessage);
             }
 
-            CausalBroadcast.addPendingMessage(terminateMessage);
-            CausalBroadcast.checkPendingMessages();
+            instance.addPendingMessage(terminateMessage);
+            instance.checkPendingMessages();
             return true;
         }
         return false;

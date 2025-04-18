@@ -11,6 +11,12 @@ import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Handles the TRANSACTION message. This is a simple handler that adds the amount
+ * to the BitcakeManager and then broadcasts the message to other nodes.
+ *
+ * @author bmilojkovic
+ */
 @RequiredArgsConstructor
 public class TransactionHandler implements MessageHandler {
 
@@ -40,11 +46,13 @@ public class TransactionHandler implements MessageHandler {
 			
 			bitcakeManager.addSomeBitcakes(amountNumber);
 
+			CausalBroadcast instance = CausalBroadcast.getInstance();
+			
 			if (bitcakeManager instanceof ABBitcakeManager) {
-				CausalBroadcast.addReceivedMessage(clientMessage);
+				instance.addReceivedMessage(clientMessage);
 			}
 			else if (bitcakeManager instanceof AVBitcakeManager) {
-				CausalBroadcast.recordTransaction(clientMessage.getSenderVectorClock(), clientMessage.getOriginalSenderInfo().id(), amountNumber);
+				instance.recordTransaction(clientMessage.getSenderVectorClock(), clientMessage.getOriginalSenderInfo().id(), amountNumber);
 			}
 
 			AppConfig.timestampedStandardPrint("Transaction handler got: " + clientMessage);

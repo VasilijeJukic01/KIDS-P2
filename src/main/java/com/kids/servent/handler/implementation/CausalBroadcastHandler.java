@@ -3,7 +3,6 @@ package com.kids.servent.handler.implementation;
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
 import com.kids.app.servent.ServentInfo;
-import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.util.MessageUtil;
@@ -23,16 +22,11 @@ public class CausalBroadcastHandler implements MessageHandler {
 
     private final Message clientMessage;
     private final Set<Message> receivedBroadcasts;
-    private final SnapshotCollector snapshotCollector;
     private final Object lock;
 
     @Override
     public void run() {
         ServentInfo senderInfo = clientMessage.getOriginalSenderInfo();
-
-//        ServentInfo lastSenderInfo = clientMessage.getRoute().isEmpty() ? clientMessage.getOriginalSenderInfo() : clientMessage.getRoute().get(clientMessage.getRoute().size() - 1);
-//        String text = String.format("Got %s from %s broadcast by %s", clientMessage.getMessageText(), lastSenderInfo, senderInfo);
-//        AppConfig.timestampedStandardPrint(text);
 
         if (senderInfo.id() == AppConfig.myServentInfo.id()) {
             AppConfig.timestampedStandardPrint("Got own message back. No rebroadcast.");
@@ -42,8 +36,9 @@ public class CausalBroadcastHandler implements MessageHandler {
 
                 if (isAdded) {
                     // Add the message to the pending queue and check for causal order.
-                    CausalBroadcast.addPendingMessage(clientMessage);
-                    CausalBroadcast.checkPendingMessages();
+                    CausalBroadcast instance = CausalBroadcast.getInstance();
+                    instance.addPendingMessage(clientMessage);
+                    instance.checkPendingMessages();
 
                     // Rebroadcast the message to neighbors
                     if (!AppConfig.IS_CLIQUE) {

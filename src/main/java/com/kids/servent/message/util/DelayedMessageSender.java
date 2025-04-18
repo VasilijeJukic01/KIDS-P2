@@ -28,9 +28,7 @@ public class DelayedMessageSender implements Runnable {
 		 */
 		try {
 			Thread.sleep((long)(Math.random() * 1000) + 500);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		} catch (InterruptedException ignore) { }
 		
 		ServentInfo receiverInfo = messageToSend.getReceiverInfo();
 		if (MessageUtil.MESSAGE_UTIL_PRINTING) {

@@ -23,7 +23,8 @@ public class ABSnapshotRequestHandler implements MessageHandler {
     public void run() {
         if (clientMessage.getMessageType() == MessageType.AB_SNAPSHOT_REQUEST) {
             int currentAmount = snapshotCollector.getBitcakeManager().getCurrentBitcakeAmount();
-            Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+            CausalBroadcast instance = CausalBroadcast.getInstance();
+            Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(instance.getVectorClockValues());
 
             Message response = new ABSnapshotResponseMessage(
                     AppConfig.myServentInfo,
@@ -31,10 +32,10 @@ public class ABSnapshotRequestHandler implements MessageHandler {
                     null,
                     vectorClock,
                     currentAmount,
-                    CausalBroadcast.getSent(),
-                    CausalBroadcast.getReceived()
+                    instance.getSent(),
+                    instance.getReceived()
             );
-            CausalBroadcast.causalClockIncrement(response);
+            instance.causalClockIncrement(response);
 
             AppConfig.myServentInfo.neighbors()
                     .forEach(neighbor -> MessageUtil.sendMessage(response.changeReceiver(neighbor).makeMeASender()));

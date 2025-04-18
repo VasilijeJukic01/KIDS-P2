@@ -21,19 +21,20 @@ public class AVTerminateHandler implements MessageHandler {
     public void run() {
         if (clientMessage.getMessageType() == MessageType.AV_TERMINATE) {
             AppConfig.timestampedStandardPrint("AV Termination");
-            CausalBroadcast.markerVectorClock = null;
+            CausalBroadcast instance = CausalBroadcast.getInstance();
+            instance.setMarkerVectorClock(null);
 
-            int sum = CausalBroadcast.recordedAmount;
-            AppConfig.timestampedStandardPrint("Recorded bitcake amount: " + CausalBroadcast.recordedAmount);
+            int sum = instance.getRecordedAmount();
+            AppConfig.timestampedStandardPrint("Recorded bitcake amount: " + instance.getRecordedAmount());
 
             // Input channel
-            for (Map.Entry<Integer, Integer> entry : CausalBroadcast.inputChannel.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry : instance.getInputChannel().entrySet()) {
                 AppConfig.timestampedStandardPrint("Unreceived bitcake amount: " + entry.getValue() + " from " + entry.getKey());
                 sum += entry.getValue();
             }
 
             // Output channel
-            for (Map.Entry<Integer, Integer> entry : CausalBroadcast.outputChannel.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry : instance.getOutputChannel().entrySet()) {
                 AppConfig.timestampedStandardPrint("Sent bitcake amount: " + entry.getValue() + " from " + entry.getKey());
                 sum -= entry.getValue();
             }

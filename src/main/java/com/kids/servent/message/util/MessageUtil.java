@@ -67,16 +67,12 @@ public class MessageUtil {
 	public static void sendMessage(Message message) {
 		if (AppConfig.IS_FIFO) {
 			try {
-				// Special handling for marker/snapshot/control messages
-				if (message.getMessageType() == MessageType.CC_SNAPSHOT_REQUEST ||
-					message.getMessageType() == MessageType.CC_SNAPSHOT_RESPONSE ||
-					message.getMessageType() == MessageType.CC_RESUME) {
-
+				if (isCoordinatedCheckpointingMessage(message.getMessageType())) {
 					int receiverId = message.getOriginalReceiverInfo().id();
 					
 					// Check if we have a queue for this receiver
 					if (!pendingMarkers.containsKey(receiverId)) {
-						// Fallback to sending directly
+						// Fallback
 						Thread delayedSender = new Thread(new DelayedMessageSender(message));
 						delayedSender.start();
 						return;
@@ -86,16 +82,11 @@ public class MessageUtil {
 					AppConfig.timestampedStandardPrint("Added message to pendingMarkers queue: " + message);
 				}
 				else {
-					// Check if the message has valid originalReceiverInfo
-					if (message.getOriginalReceiverInfo() == null) {
-						AppConfig.timestampedErrorPrint("Cannot send message with null originalReceiverInfo: " + message);
-						return;
-					}
 					int receiverId = message.getOriginalReceiverInfo().id();
 					
 					// Check if we have a queue for this receiver
 					if (!pendingMessages.containsKey(receiverId)) {
-						// Try to send directly as fallback
+						// Fallback
 						Thread delayedSender = new Thread(new DelayedMessageSender(message));
 						delayedSender.start();
 						return;
@@ -105,14 +96,17 @@ public class MessageUtil {
 				}
 			} catch (InterruptedException e) {
 				AppConfig.timestampedErrorPrint("Interrupted while putting message in queue: " + e.getMessage());
-				e.printStackTrace();
 			} catch (Exception e) {
 				AppConfig.timestampedErrorPrint("Error sending message: " + e.getMessage());
-				e.printStackTrace();
 			}
 		} else {
 			Thread delayedSender = new Thread(new DelayedMessageSender(message));
 			delayedSender.start();
 		}
 	}
+
+	private static boolean isCoordinatedCheckpointingMessage(MessageType type) {
+		return type == MessageType.CC_SNAPSHOT_REQUEST || type == MessageType.CC_SNAPSHOT_RESPONSE || type == MessageType.CC_RESUME;
+	}
+
 }

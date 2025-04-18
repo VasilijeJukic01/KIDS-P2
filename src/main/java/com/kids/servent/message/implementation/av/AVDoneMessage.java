@@ -7,6 +7,9 @@ import com.kids.servent.message.implementation.BasicMessage;
 import java.io.Serial;
 import java.util.Map;
 
+/**
+ * This message is used to signal the completion of the AV process between servents.
+ */
 public class AVDoneMessage extends BasicMessage {
 
     @Serial

@@ -74,7 +74,7 @@ public class ServentMain {
 			snapshotCollector = new SnapshotCollectorWorker(AppConfig.SNAPSHOT_TYPE);
 		}
 
-		CausalBroadcast.injectSnapshotCollector(snapshotCollector);
+		CausalBroadcast.getInstance().injectSnapshotCollector(snapshotCollector);
 
 		Thread snapshotCollectorThread = new Thread(snapshotCollector);
 		snapshotCollectorThread.start();

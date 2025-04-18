@@ -7,6 +7,9 @@ import com.kids.servent.message.implementation.BasicMessage;
 import java.io.Serial;
 import java.util.Map;
 
+/**
+ * Represents a marker message used in the AV process.
+ */
 public class AVMarkerMessage extends BasicMessage {
 
     @Serial

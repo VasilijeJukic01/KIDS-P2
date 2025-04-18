@@ -8,6 +8,8 @@ import com.kids.servent.message.implementation.av.AVDoneMessage;
 import com.kids.servent.message.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @RequiredArgsConstructor
 public class AVMarkerHandler implements MessageHandler {
 
@@ -16,16 +18,24 @@ public class AVMarkerHandler implements MessageHandler {
 
     @Override
     public void run() {
-        // Initialize input and output channels
-        AppConfig.myServentInfo.neighbors()
-                .forEach(neighbor -> {
-                    CausalBroadcast.inputChannel.put(neighbor, 0);
-                    CausalBroadcast.outputChannel.put(neighbor, 0);
-                });
+        CausalBroadcast instance = CausalBroadcast.getInstance();
+        
+        // Initialize input and output channels for each neighbor
+        AppConfig.myServentInfo.neighbors().forEach(neighbor -> {
+            /*
+             * Access inputChannel and outputChannel map through transaction recording
+             * This is a workaround since we cant directly modify the private maps.
+             */
+            instance.recordTransaction(
+                new ConcurrentHashMap<>(instance.getVectorClockValues()), 
+                neighbor, 
+                0
+            );
+        });
 
-        CausalBroadcast.markerVectorClock = clientMessage.getSenderVectorClock();
-        CausalBroadcast.recordedAmount = bitcakeAmount;
-        CausalBroadcast.initiatorId = clientMessage.getReceiverInfo().id();
+        instance.setMarkerVectorClock(clientMessage.getSenderVectorClock());
+        instance.setRecordedAmount(bitcakeAmount);
+        instance.setInitiatorId(clientMessage.getReceiverInfo().id());
 
         // Create DONE message
         Message doneMessage = new AVDoneMessage(
@@ -41,6 +51,6 @@ public class AVMarkerHandler implements MessageHandler {
             MessageUtil.sendMessage(doneMessage);
         }
 
-        CausalBroadcast.causalClockIncrement(doneMessage);
+        instance.causalClockIncrement(doneMessage);
     }
 }
