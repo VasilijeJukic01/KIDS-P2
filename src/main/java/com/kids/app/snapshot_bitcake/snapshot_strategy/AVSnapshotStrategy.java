@@ -2,7 +2,6 @@ package com.kids.app.snapshot_bitcake.snapshot_strategy;
 
 import com.kids.app.AppConfig;
 import com.kids.app.CausalBroadcast;
-import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
 import com.kids.app.snapshot_bitcake.alagar_venkatesan.AVBitcakeManager;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.implementation.av.AVMarkerMessage;
@@ -79,7 +78,7 @@ public class AVSnapshotStrategy implements SnapshotStrategy {
     }
 
     @Override
-    public void processCollectedData(Map<String, ABSnapshot> collectedData) {
+    public void processCollectedData() {
         while (wait) {
             try {
                 Thread.sleep(1000);

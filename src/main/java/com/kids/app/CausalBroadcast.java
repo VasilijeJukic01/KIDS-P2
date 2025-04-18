@@ -7,7 +7,11 @@ import com.kids.servent.handler.implementation.TransactionHandler;
 import com.kids.servent.handler.implementation.av.AVDoneHandler;
 import com.kids.servent.handler.implementation.av.AVMarkerHandler;
 import com.kids.servent.handler.implementation.av.AVTerminateHandler;
+import com.kids.servent.handler.implementation.cc.CCResumeHandler;
+import com.kids.servent.handler.implementation.cc.CCSnapshotRequestHandler;
+import com.kids.servent.handler.implementation.cc.CCSnapshotResponseHandler;
 import com.kids.servent.message.Message;
+import com.kids.servent.message.MessageType;
 import com.kids.servent.message.implementation.BasicMessage;
 import lombok.Getter;
 
@@ -98,6 +102,52 @@ public class CausalBroadcast {
      * Checks the pending messages queue and commits messages that satisfy the causal order.
      */
     public static void checkPendingMessages() {
+        if (AppConfig.IS_FIFO) processPendingMessagesFIFO();
+        else processPendingMessagesCausal();
+    }
+
+    private static void processPendingMessagesFIFO() {
+        synchronized (lock) {
+            boolean working = true;
+
+            while (working) {
+                working = false;
+                Iterator<Message> iterator = pendingMessages.iterator();
+
+                while (iterator.hasNext()) {
+                    Message pendingMessage = iterator.next();
+                    if (isCausalityViolatedFIFO(pendingMessage)) {
+                        continue;
+                    }
+
+                    processMessage(pendingMessage);
+                    iterator.remove();
+                    working = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    private static boolean isCausalityViolatedFIFO(Message pendingMessage) {
+        Map<Integer, Integer> senderVectorClock = pendingMessage.getSenderVectorClock();
+        if (senderVectorClock == null) return true;
+
+        int senderId = pendingMessage.getOriginalSenderInfo().id();
+
+        for (Map.Entry<Integer, Integer> entry : senderVectorClock.entrySet()) {
+            int id = entry.getKey();
+            int clock = entry.getValue();
+            int localClock = vectorClock.getOrDefault(id, 0);
+
+            if (id == senderId) if (clock != localClock + 1) return true;
+            else if (clock > localClock) return true;
+        }
+
+        return false;
+    }
+
+    private static void processPendingMessagesCausal() {
         boolean working = true;
 
         while (working) {
@@ -105,53 +155,74 @@ public class CausalBroadcast {
 
             synchronized (lock) {
                 Iterator<Message> iterator = pendingMessages.iterator();
-                // Create a copy of current vector clock to compare with each pending message.
                 Map<Integer, Integer> myVectorClock = getVectorClock();
 
                 while (iterator.hasNext()) {
                     Message pendingMessage = iterator.next();
                     BasicMessage basicMessage = (BasicMessage) pendingMessage;
 
-                    // If current vector clock does not lag behind the sender's clock, commit the message.
                     if (!otherClockGreater(myVectorClock, basicMessage.getSenderVectorClock())) {
-                        working = true;
-
-                        AppConfig.timestampedStandardPrint("Committing: " + pendingMessage);
-                        // Update the vector clock for the message's original sender
-                        incrementClock(pendingMessage.getOriginalSenderInfo().id());
-
-                        boolean added;
-                        switch (basicMessage.getMessageType()) {
-                            case TRANSACTION -> {
-                                if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id())
-                                    executor.submit(new TransactionHandler(basicMessage, snapshotCollector.getBitcakeManager()));
-                            }
-                            case AB_SNAPSHOT_REQUEST -> {
-                                added = receivedAbRequest.add(basicMessage);
-                                if (added) executor.submit(new ABSnapshotRequestHandler(basicMessage, snapshotCollector));
-                            }
-                            case AB_SNAPSHOT_RESPONSE -> {
-                                if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id())
-                                    executor.submit(new ABSnapshotResponseHandler(basicMessage, snapshotCollector));
-                            }
-                            case AV_MARKER -> {
-                                executor.submit(new AVMarkerHandler(basicMessage, snapshotCollector.getBitcakeManager().getCurrentBitcakeAmount()));
-                            }
-                            case AV_DONE -> {
-                                if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
-                                    executor.submit(new AVDoneHandler(basicMessage, snapshotCollector));
-                                }
-                            }
-                            case AV_TERMINATE -> {
-                                executor.submit(new AVTerminateHandler(basicMessage, snapshotCollector));
-                            }
-                        }
-
+                        processMessage(pendingMessage);
                         iterator.remove();
+                        working = true;
                         break;
                     }
                 }
             }
+        }
+    }
+
+    private static void processMessage(Message pendingMessage) {
+        BasicMessage basicMessage = (BasicMessage) pendingMessage;
+        AppConfig.timestampedStandardPrint("Committing: " + pendingMessage);
+        incrementClock(pendingMessage.getOriginalSenderInfo().id());
+
+        try {
+            switch (basicMessage.getMessageType()) {
+                case TRANSACTION -> {
+                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+                        executor.submit(new TransactionHandler(basicMessage, snapshotCollector.getBitcakeManager()));
+                    }
+                }
+                case AB_SNAPSHOT_REQUEST -> {
+                    if (receivedAbRequest.add(basicMessage)) {
+                        executor.submit(new ABSnapshotRequestHandler(basicMessage, snapshotCollector));
+                    }
+                }
+                case AB_SNAPSHOT_RESPONSE -> {
+                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+                        executor.submit(new ABSnapshotResponseHandler(basicMessage, snapshotCollector));
+                    }
+                }
+                case AV_MARKER -> {
+                    executor.submit(new AVMarkerHandler(basicMessage, snapshotCollector.getBitcakeManager().getCurrentBitcakeAmount()));
+                }
+                case AV_DONE -> {
+                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+                        executor.submit(new AVDoneHandler(basicMessage, snapshotCollector));
+                    }
+                }
+                case AV_TERMINATE -> {
+                    executor.submit(new AVTerminateHandler(basicMessage, snapshotCollector));
+                }
+                case CC_SNAPSHOT_REQUEST -> {
+                    AppConfig.timestampedStandardPrint("Processing CC_SNAPSHOT_REQUEST: " + basicMessage);
+                    executor.submit(new CCSnapshotRequestHandler(basicMessage, snapshotCollector));
+                }
+                case CC_SNAPSHOT_RESPONSE -> {
+                    if (basicMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+                        executor.submit(new CCSnapshotResponseHandler(basicMessage, snapshotCollector));
+                    }
+                }
+                case CC_RESUME -> {
+                    executor.submit(new CCResumeHandler(basicMessage, snapshotCollector));
+                }
+                default -> {
+                    AppConfig.timestampedErrorPrint("Unhandled message type: " + basicMessage.getMessageType());
+                }
+            }
+        } catch (Exception e) {
+            AppConfig.timestampedErrorPrint("Error handling message " + basicMessage + ": " + e.getMessage());
         }
     }
 
@@ -192,6 +263,9 @@ public class CausalBroadcast {
     }
 
     public static void addPendingMessage(Message msg) {
+        if (msg.getMessageType() == MessageType.CC_SNAPSHOT_REQUEST) {
+            AppConfig.timestampedStandardPrint("Adding CC_SNAPSHOT_REQUEST to pending messages: " + msg);
+        }
         pendingMessages.add(msg);
     }
 

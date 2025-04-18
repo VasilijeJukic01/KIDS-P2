@@ -2,8 +2,8 @@ package com.kids.servent.message.util;
 
 import com.kids.app.AppConfig;
 import com.kids.servent.message.Message;
+import com.kids.servent.message.MessageType;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -56,12 +56,7 @@ public class MessageUtil {
 			}
 			
 			socket.close();
-		} catch (IOException e) {
-			AppConfig.timestampedErrorPrint("Error in reading socket on " +
-					socket.getInetAddress() + ":" + socket.getPort());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ignore) { }
 		
 		if (MESSAGE_UTIL_PRINTING) {
 			AppConfig.timestampedStandardPrint("Got message " + clientMessage);
@@ -70,7 +65,54 @@ public class MessageUtil {
 	}
 	
 	public static void sendMessage(Message message) {
-		Thread delayedSender = new Thread(new DelayedMessageSender(message));
-		delayedSender.start();
+		if (AppConfig.IS_FIFO) {
+			try {
+				// Special handling for marker/snapshot/control messages
+				if (message.getMessageType() == MessageType.CC_SNAPSHOT_REQUEST ||
+					message.getMessageType() == MessageType.CC_SNAPSHOT_RESPONSE ||
+					message.getMessageType() == MessageType.CC_RESUME) {
+
+					int receiverId = message.getOriginalReceiverInfo().id();
+					
+					// Check if we have a queue for this receiver
+					if (!pendingMarkers.containsKey(receiverId)) {
+						// Fallback to sending directly
+						Thread delayedSender = new Thread(new DelayedMessageSender(message));
+						delayedSender.start();
+						return;
+					}
+					
+					pendingMarkers.get(receiverId).put(message);
+					AppConfig.timestampedStandardPrint("Added message to pendingMarkers queue: " + message);
+				}
+				else {
+					// Check if the message has valid originalReceiverInfo
+					if (message.getOriginalReceiverInfo() == null) {
+						AppConfig.timestampedErrorPrint("Cannot send message with null originalReceiverInfo: " + message);
+						return;
+					}
+					int receiverId = message.getOriginalReceiverInfo().id();
+					
+					// Check if we have a queue for this receiver
+					if (!pendingMessages.containsKey(receiverId)) {
+						// Try to send directly as fallback
+						Thread delayedSender = new Thread(new DelayedMessageSender(message));
+						delayedSender.start();
+						return;
+					}
+					
+					pendingMessages.get(receiverId).put(message);
+				}
+			} catch (InterruptedException e) {
+				AppConfig.timestampedErrorPrint("Interrupted while putting message in queue: " + e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e) {
+				AppConfig.timestampedErrorPrint("Error sending message: " + e.getMessage());
+				e.printStackTrace();
+			}
+		} else {
+			Thread delayedSender = new Thread(new DelayedMessageSender(message));
+			delayedSender.start();
+		}
 	}
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class contains all the global application configuration stuff.
@@ -46,7 +47,10 @@ public class AppConfig {
 	 * </ul>
 	 */
 	public static SnapshotType SNAPSHOT_TYPE;
-	
+
+	public static AtomicBoolean isWhite = new AtomicBoolean(true);
+	public static final Object colorLock = new Object();
+
 	/**
 	 * Print a message to stdout with a timestamp
 	 * @param message message to print
@@ -124,6 +128,9 @@ public class AppConfig {
 			break;
 		case "av":
 			SNAPSHOT_TYPE = SnapshotType.ALAGAR_VENKATESAN;
+			break;
+		case "cc":
+			SNAPSHOT_TYPE = SnapshotType.COORDINATED_CHECKPOINTING;
 			break;
 		default:
 			timestampedErrorPrint("Problem reading snapshot algorithm. Defaulting to NONE.");

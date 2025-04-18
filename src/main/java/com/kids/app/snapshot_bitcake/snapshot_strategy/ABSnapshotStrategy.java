@@ -50,10 +50,10 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
     }
 
     @Override
-    public void processCollectedData(Map<String, ABSnapshot> collectedAbValues) {
+    public void processCollectedData() {
         int sum = 0;
 
-        for (Map.Entry<String, ABSnapshot> result : collectedAbValues.entrySet()) {
+        for (Map.Entry<String, ABSnapshot> result : collectedData.entrySet()) {
             int bitCakeAmount = result.getValue().getAmount();
             List<Message> sentTransactions = result.getValue().getSent();
 
@@ -62,7 +62,7 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
 
             // Check for unprocessed transactions
             for (Message sent : sentTransactions) {
-                ABSnapshot abSnapshotResult = collectedAbValues.get("node " + sent.getOriginalReceiverInfo().id());
+                ABSnapshot abSnapshotResult = collectedData.get("node " + sent.getOriginalReceiverInfo().id());
                 List<Message> receivedTransactions = abSnapshotResult.getReceived();
 
                 boolean exist = receivedTransactions.stream()
@@ -79,7 +79,7 @@ public class ABSnapshotStrategy implements SnapshotStrategy {
         }
 
         AppConfig.timestampedStandardPrint("System bitcake count: " + sum);
-        collectedAbValues.clear();
+        collectedData.clear();
     }
 
 }

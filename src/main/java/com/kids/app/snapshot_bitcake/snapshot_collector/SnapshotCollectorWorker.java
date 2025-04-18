@@ -6,8 +6,11 @@ import com.kids.app.snapshot_bitcake.SnapshotType;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABSnapshot;
 import com.kids.app.snapshot_bitcake.alagar_venkatesan.AVBitcakeManager;
+import com.kids.app.snapshot_bitcake.coordinated_checkpointing.CCBitcakeManager;
+import com.kids.app.snapshot_bitcake.coordinated_checkpointing.CCSnapshot;
 import com.kids.app.snapshot_bitcake.snapshot_strategy.ABSnapshotStrategy;
 import com.kids.app.snapshot_bitcake.snapshot_strategy.AVSnapshotStrategy;
+import com.kids.app.snapshot_bitcake.snapshot_strategy.CCSnapshotStrategy;
 import com.kids.app.snapshot_bitcake.snapshot_strategy.SnapshotStrategy;
 
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Worker class that implements the SnapshotCollector functionality.
- * Supports the Acharya-Badrinath snapshot algorithm.
+ * Supports multiple snapshot algorithms.
  *
  * <p>
  * The snapshot collection consists of three main stages:
@@ -29,12 +32,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </ol>
  * </p>
  */
-public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, AVCollector {
+public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, AVCollector, CCCollector {
 
 	private volatile boolean working = true;
 	private final AtomicBoolean collecting = new AtomicBoolean(false);
+
 	private final Map<String, ABSnapshot> collectedABData = new ConcurrentHashMap<>();
 	private final List<Integer> collectedAVData = new CopyOnWriteArrayList<>();
+	private final Map<Integer, CCSnapshot> collectedCCData = new ConcurrentHashMap<>();
 
 	private BitcakeManager bitcakeManager;
 	private SnapshotStrategy snapshotStrategy;
@@ -47,7 +52,11 @@ public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, 
 			}
 			case ALAGAR_VENKATESAN -> {
 				this.bitcakeManager = new AVBitcakeManager();
-				this.snapshotStrategy = new AVSnapshotStrategy(collectedAVData, (AVBitcakeManager)bitcakeManager);
+				this.snapshotStrategy = new AVSnapshotStrategy(collectedAVData, (AVBitcakeManager) bitcakeManager);
+			}
+			case COORDINATED_CHECKPOINTING -> {
+				this.bitcakeManager = new CCBitcakeManager();
+				this.snapshotStrategy = new CCSnapshotStrategy(collectedCCData, (CCBitcakeManager) bitcakeManager, this);
 			}
 			case NONE -> {
 				AppConfig.timestampedErrorPrint("Making snapshot collector without specifying type. Exiting...");
@@ -81,6 +90,16 @@ public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, 
 	}
 
 	@Override
+	public void addCCSnapshotInfo(int id, CCSnapshot ccSnapshot) {
+		collectedCCData.put(id, ccSnapshot);
+	}
+	
+	@Override
+	public int getCollectedCCSize() {
+		return collectedCCData.size();
+	}
+
+	@Override
 	public void run() {
 		while(working) {
 			
@@ -89,7 +108,8 @@ public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, 
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
+					AppConfig.timestampedErrorPrint("Interrupted while waiting to start collecting.");
 				}
 				if (!working) return;
 			}
@@ -102,18 +122,28 @@ public class SnapshotCollectorWorker implements SnapshotCollector, ABCollector, 
 			 */
 
 			snapshotStrategy.initiateSnapshot();
+			
+			while (collecting.get()) {
+				/*
+				 * Wait for all the responses.
+				 */
+				if (snapshotStrategy.isSnapshotComplete()) {
+					snapshotStrategy.processCollectedData();
 
-			while (!snapshotStrategy.isSnapshotComplete()) {
+					collectedABData.clear();
+					collectedAVData.clear();
+					collectedCCData.clear();
+
+					collecting.set(false);
+				}
+				
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
+					AppConfig.timestampedErrorPrint("Interrupted while waiting for snapshot to complete.");
 				}
-				if (!working) return;
 			}
-
-			snapshotStrategy.processCollectedData(collectedABData);
-			collecting.set(false);
 		}
 	}
 	

@@ -4,18 +4,18 @@ import com.kids.app.AppConfig;
 import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.cli.CLIParser;
 import com.kids.servent.SimpleServentListener;
+import com.kids.servent.message.util.FifoSendWorker;
+import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 public class StopCommand implements CLICommand {
 
 	private final CLIParser parser;
 	private final SimpleServentListener listener;
 	private final SnapshotCollector snapshotCollector;
-	
-	public StopCommand(CLIParser parser, SimpleServentListener listener, SnapshotCollector snapshotCollector) {
-		this.parser = parser;
-		this.listener = listener;
-		this.snapshotCollector = snapshotCollector;
-	}
+	private final List<FifoSendWorker> senderWorkers;
 	
 	@Override
 	public String commandName() {
@@ -27,6 +27,7 @@ public class StopCommand implements CLICommand {
 		AppConfig.timestampedStandardPrint("Stopping...");
 		parser.stop();
 		listener.stop();
+		senderWorkers.forEach(FifoSendWorker::stop);
 		snapshotCollector.stop();
 	}
 

@@ -5,6 +5,7 @@ import com.kids.app.Cancellable;
 import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.cli.command.*;
 import com.kids.servent.SimpleServentListener;
+import com.kids.servent.message.util.FifoSendWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,14 @@ public class CLIParser implements Runnable, Cancellable {
 	private volatile boolean working = true;
 	private final List<CLICommand> commandList;
 	
-	public CLIParser(SimpleServentListener listener, SnapshotCollector snapshotCollector) {
+	public CLIParser(SimpleServentListener listener, SnapshotCollector snapshotCollector, List<FifoSendWorker> senderThreads) {
 		this.commandList = new ArrayList<>();
 		
 		commandList.add(new InfoCommand());
 		commandList.add(new PauseCommand());
 		commandList.add(new TransactionBurstCommand(snapshotCollector));
 		commandList.add(new BitcakeInfoCommand(snapshotCollector));
-		commandList.add(new StopCommand(this, listener, snapshotCollector));
+		commandList.add(new StopCommand(this, listener, snapshotCollector, senderThreads));
 	}
 	
 	@Override

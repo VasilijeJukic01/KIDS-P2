@@ -5,6 +5,7 @@ import com.kids.app.CausalBroadcast;
 import com.kids.app.snapshot_bitcake.BitcakeManager;
 import com.kids.app.snapshot_bitcake.acharya_badrinath.ABBitcakeManager;
 import com.kids.app.snapshot_bitcake.alagar_venkatesan.AVBitcakeManager;
+import com.kids.app.snapshot_bitcake.coordinated_checkpointing.CCBitcakeManager;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.MessageType;
@@ -27,6 +28,14 @@ public class TransactionHandler implements MessageHandler {
 			} catch (NumberFormatException e) {
 				AppConfig.timestampedErrorPrint("Couldn't parse amount: " + amountString);
 				return;
+			}
+			
+			// For Coordinated Checkpointing, we need to check if we are in snapshot mode
+			if (bitcakeManager instanceof CCBitcakeManager ccBitcakeManager) {
+				if (ccBitcakeManager.shouldQueueMessage(clientMessage)) {
+					AppConfig.timestampedStandardPrint("Transaction queued due to active snapshot: " + clientMessage);
+					return;
+				}
 			}
 			
 			bitcakeManager.addSomeBitcakes(amountNumber);

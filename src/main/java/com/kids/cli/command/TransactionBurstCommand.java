@@ -32,39 +32,57 @@ public class TransactionBurstCommand implements CLICommand {
 		@Override
 		public void run() {
 			for (int i = 0; i < TRANSACTION_COUNT; i++) {
-				ServentInfo receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
-
-				// Choose a random receiver that is not us
-				while (receiverInfo.id() == AppConfig.myServentInfo.id()) {
-					receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
-				}
-
 				int amount = 1 + (int) (Math.random() * MAX_TRANSFER_AMOUNT);
-
 				Message transaction;
-				synchronized (lock) {
-					Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
 
-					transaction = new TransactionMessage(
-							AppConfig.myServentInfo,
-							receiverInfo,
-							null,
-							amount,
-							snapshotCollector.getBitcakeManager(),
-							vectorClock
-					);
+				if (AppConfig.IS_FIFO) {
+					for (int neighbor : AppConfig.myServentInfo.neighbors()) {
+						ServentInfo neighborInfo = AppConfig.getInfoById(neighbor);
 
-					if (snapshotCollector.getBitcakeManager() instanceof ABBitcakeManager) {
-						CausalBroadcast.addSentMessage(transaction);
+						Message transactionMessage = new TransactionMessage(
+								AppConfig.myServentInfo,
+								neighborInfo,
+								neighborInfo,
+								amount,
+								snapshotCollector.getBitcakeManager(),
+								null
+						);
+
+						MessageUtil.sendMessage(transactionMessage);
+					}
+				}
+				else {
+					synchronized (lock) {
+						ServentInfo receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
+
+						// Choose a random receiver that is not us
+						while (receiverInfo.id() == AppConfig.myServentInfo.id()) {
+							receiverInfo = AppConfig.getInfoById((int) (Math.random() * AppConfig.getServentCount()));
+						}
+
+						Map<Integer, Integer> vectorClock = new ConcurrentHashMap<>(CausalBroadcast.getVectorClock());
+
+						transaction = new TransactionMessage(
+								AppConfig.myServentInfo,
+								receiverInfo,
+								null,
+								amount,
+								snapshotCollector.getBitcakeManager(),
+								vectorClock
+						);
+
+						if (snapshotCollector.getBitcakeManager() instanceof ABBitcakeManager) {
+							CausalBroadcast.addSentMessage(transaction);
+						}
+
+						// Deduct the amount and send the message
+						transaction.sendEffect();
+						CausalBroadcast.causalClockIncrement(transaction);
 					}
 
-					// Deduct the amount and send the message
-					transaction.sendEffect();
-					CausalBroadcast.causalClockIncrement(transaction);
+					AppConfig.myServentInfo.neighbors()
+							.forEach(neighbor -> MessageUtil.sendMessage(transaction.changeReceiver(neighbor).makeMeASender()));
 				}
-
-				AppConfig.myServentInfo.neighbors()
-						.forEach(neighbor -> MessageUtil.sendMessage(transaction.changeReceiver(neighbor).makeMeASender()));
 			}
 		}
 	}

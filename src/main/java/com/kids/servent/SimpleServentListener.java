@@ -5,6 +5,11 @@ import com.kids.app.Cancellable;
 import com.kids.app.snapshot_bitcake.snapshot_collector.SnapshotCollector;
 import com.kids.servent.handler.MessageHandler;
 import com.kids.servent.handler.implementation.CausalBroadcastHandler;
+import com.kids.servent.handler.implementation.NullHandler;
+import com.kids.servent.handler.implementation.TransactionHandler;
+import com.kids.servent.handler.implementation.cc.CCResumeHandler;
+import com.kids.servent.handler.implementation.cc.CCSnapshotRequestHandler;
+import com.kids.servent.handler.implementation.cc.CCSnapshotResponseHandler;
 import com.kids.servent.message.Message;
 import com.kids.servent.message.util.MessageUtil;
 
@@ -52,18 +57,54 @@ public class SimpleServentListener implements Runnable, Cancellable {
 		
 		while (working) {
 			try {
-				Message clientMessage;
-				// This blocks for up to 1s, after which SocketTimeoutException is thrown
-				Socket clientSocket = listenerSocket.accept();
-				clientMessage = MessageUtil.readMessage(clientSocket);
+				MessageHandler messageHandler;
+				if (AppConfig.IS_FIFO) {
+					Message clientMessage;
 
-				MessageHandler messageHandler = new CausalBroadcastHandler(
-						clientMessage,
-						receivedBroadcasts,
-						snapshotCollector,
-						lock
-				);
+					Socket clientSocket = listenerSocket.accept();
+					clientMessage = MessageUtil.readMessage(clientSocket);
 
+					messageHandler = new NullHandler(clientMessage);
+					
+					// Log received message before processing
+					AppConfig.timestampedStandardPrint("Received message: " + clientMessage);
+					
+					switch (clientMessage.getMessageType()) {
+						case TRANSACTION:
+							messageHandler = new TransactionHandler(clientMessage, snapshotCollector.getBitcakeManager());
+							break;
+						case CC_SNAPSHOT_REQUEST:
+							AppConfig.timestampedStandardPrint("Processing CC_SNAPSHOT_REQUEST in listener");
+							messageHandler = new CCSnapshotRequestHandler(clientMessage, snapshotCollector);
+							break;
+						case CC_SNAPSHOT_RESPONSE:
+							if (clientMessage.getOriginalReceiverInfo().id() == AppConfig.myServentInfo.id()) {
+								messageHandler = new CCSnapshotResponseHandler(clientMessage, snapshotCollector);
+							}
+							break;
+						case CC_RESUME:
+							messageHandler = new CCResumeHandler(clientMessage, snapshotCollector);
+							break;
+						case POISON:
+							break;
+						default:
+							AppConfig.timestampedErrorPrint("Unhandled message type: " + clientMessage.getMessageType());
+							break;
+					}
+				}
+				else {
+					Message clientMessage;
+					// This blocks for up to 1s, after which SocketTimeoutException is thrown
+					Socket clientSocket = listenerSocket.accept();
+					clientMessage = MessageUtil.readMessage(clientSocket);
+
+					messageHandler = new CausalBroadcastHandler(
+							clientMessage,
+							receivedBroadcasts,
+							snapshotCollector,
+							lock
+					);
+				}
 				threadPool.submit(messageHandler);
 			} catch (SocketTimeoutException timeoutEx) {
 				// Uncomment the next line to see that we are waking up every second
